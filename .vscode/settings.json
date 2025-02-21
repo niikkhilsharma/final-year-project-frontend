@@ -1,0 +1,101 @@
+{
+	"editor.selectionHighlight": false,
+	"explorer.confirmDelete": false,
+	"files.autoSaveDelay": 1,
+	"explorer.confirmDragAndDrop": false,
+	"files.refactoring.autoSave": false,
+	"editor.formatOnSave": true,
+	"[html]": {
+		"editor.defaultFormatter": "vscode.html-language-features"
+	},
+	"git.autofetch": true,
+	"emmet.includeLanguages": {
+		"javascript": "javascriptreact",
+		"markdown": "markdown"
+	},
+	"editor.inlineSuggest.enabled": true,
+	"emmet.excludeLanguages": [],
+	"[python]": {
+		"editor.formatOnType": true
+	},
+	"git.enableSmartCommit": true,
+	"editor.bracketPairColorization.enabled": true,
+	"[javascript]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"editor.language.brackets": [],
+	"[javascriptreact]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"workbench.tree.indent": 4,
+	"editor.formatOnPaste": true,
+	"prettier.enableDebugLogs": true,
+	"prettier.tabWidth": 1,
+	"prettier.useTabs": true,
+	"prettier.arrowParens": "avoid",
+	"[css]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"editor.unicodeHighlight.invisibleCharacters": false,
+	"[json]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"javascript.updateImportsOnFileMove.enabled": "always",
+	"[typescriptreact]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"[typescript]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"window.commandCenter": false,
+	"[jsonc]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"files.autoSave": "onFocusChange",
+	"debug.console.fontSize": 14,
+	"chat.editor.fontSize": 14,
+	"editor.accessibilityPageSize": 13,
+	"editor.linkedEditing": true,
+	"editor.fontSize": 13,
+	"terminal.integrated.fontSize": 13,
+	"editor.bracketPairColorization.independentColorPoolPerBracketType": true,
+	"githubPullRequests.pullBranch": "never",
+	"workbench.startupEditor": "none",
+	"diffEditor.ignoreTrimWhitespace": false,
+	"editor.accessibilitySupport": "off",
+	"terminal.integrated.fontFamily": "monospace",
+	"editor.fontFamily": "Hack",
+	"html.format.wrapLineLength": 150,
+	"editor.tabSize": 2,
+	"prettier.singleQuote": true,
+	"editor.maxTokenizationLineLength": 150,
+	"workbench.iconTheme": "vscode-icons",
+	"[markdown]": {
+		"editor.defaultFormatter": "yzhang.markdown-all-in-one"
+	},
+	"editor.cursorBlinking": "expand",
+	"terminal.integrated.cursorBlinking": true,
+	"editor.wordWrapColumn": 150,
+	"[mdx]": {
+		"editor.defaultFormatter": "unifiedjs.vscode-mdx"
+	},
+	"typescript.updateImportsOnFileMove.enabled": "always",
+	"[scss]": {
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
+	},
+	"explorer.confirmPasteNative": false,
+	"gitlens.launchpad.indicator.enabled": false,
+	"workbench.colorTheme": "GitHub Dark",
+	"notebook.output.textLineLimit": 1000,
+	"vs-code-prettier-eslint.prettierLast": true,
+	"editor.inlayHints.maximumLength": 250,
+	"prettier.semi": false,
+	"prettier.printWidth": 125,
+	"editor.formatOnType": true,
+	"debug.onTaskErrors": "showErrors",
+	"redhat.telemetry.enabled": false,
+	"prettier.experimentalTernaries": true,
+	"prettier.bracketSameLine": true,
+	"extensions.ignoreRecommendations": true,
+	"editor.wordWrap": "on"
+}
