@@ -1,4 +1,4 @@
-import { Calendar, ChevronDown, ChevronUp, Home, Inbox, Search, Settings, User2 } from 'lucide-react'
+import { Calendar, ChevronUp, Home, Inbox, Search, Settings, User2 } from 'lucide-react'
 import {
 	Sidebar,
 	SidebarContent,
@@ -6,11 +6,9 @@ import {
 	SidebarGroup,
 	SidebarGroupContent,
 	SidebarGroupLabel,
-	SidebarHeader,
 	SidebarMenu,
 	SidebarMenuButton,
 	SidebarMenuItem,
-	SidebarTrigger,
 } from '@/components/ui/sidebar'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import SidebarToggle from '../sidebar-toggle'

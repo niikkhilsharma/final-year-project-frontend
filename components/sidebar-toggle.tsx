@@ -4,7 +4,7 @@ import { useSidebar } from '@/components/ui/sidebar'
 import { SidebarTrigger } from '@/components/ui/sidebar'
 
 const SidebarToggle = ({ showToggleOnCollapse = true }: { showToggleOnCollapse?: boolean }) => {
-	const { state, open, setOpen, openMobile, setOpenMobile, isMobile, toggleSidebar } = useSidebar()
+	const { state } = useSidebar()
 
 	return (
 		<>{showToggleOnCollapse ? state === 'collapsed' && <SidebarTrigger /> : state === 'expanded' && <SidebarTrigger />}</>

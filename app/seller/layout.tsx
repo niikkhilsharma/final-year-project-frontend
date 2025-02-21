@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { cookies } from 'next/headers'
-import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
+import { SidebarProvider } from '@/components/ui/sidebar'
 import { AppSidebar } from '@/components/seller/app-sidebar'
 import SidebarToggle from '@/components/sidebar-toggle'
 
