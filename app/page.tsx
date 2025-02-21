@@ -1,7 +1,9 @@
 import Header from '@/components/homepage/header'
 import Hero from '@/components/homepage/hero'
 import Navbar from '@/components/homepage/navbar'
+import MaxWidthWrapper from '@/components/max-width-wrapper'
 import ProductSection from '@/components/product-section'
+import { Separator } from '@/components/ui/separator'
 
 export default function Home() {
 	const productsContainer = {
@@ -94,6 +96,9 @@ export default function Home() {
 			<Navbar />
 			<Hero />
 			<ProductSection productsContainer={productsContainer} />
+			<MaxWidthWrapper>
+				<Separator />
+			</MaxWidthWrapper>
 			<ProductSection productsContainer={sellingContainer} />
 		</div>
 	)
