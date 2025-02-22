@@ -12,3 +12,154 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id            Int            @id @default(autoincrement())
+  role          Enum
+  firstName     String
+  lastName      String
+  profilePhoto  String?
+  address       String?
+  email         String         @unique
+  password      String
+  gender        String
+  dob           DateTime
+  phoneNo       String
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  status        String
+  cart          Cart?
+  orders        Order[]
+  reviews       UserReviews[]
+  wishlist      Wishlist[]
+  refreshTokens RefreshToken[]
+  Address       Address[]
+}
+
+model Cart {
+  id       Int       @id @default(autoincrement())
+  userId   Int       @unique
+  user     User      @relation(fields: [userId], references: [id])
+  products Product[]
+}
+
+model Product {
+  id          Int           @id @default(autoincrement())
+  name        String
+  description String
+  price       Float
+  stock       Int
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  status      String
+  categoryId  Int
+  category    Category      @relation(fields: [categoryId], references: [id])
+  reviews     UserReviews[]
+  Cart        Cart?         @relation(fields: [cartId], references: [id])
+  cartId      Int?
+  OrderedItem OrderedItem[]
+  Wishlist    Wishlist[]
+}
+
+model Subscription {
+  id        Int      @id @default(autoincrement())
+  type      String
+  startDate DateTime
+  endDate   DateTime
+  status    String
+}
+
+model Order {
+  id              Int           @id @default(autoincrement())
+  userId          Int
+  paymentMethodId Int
+  totalAmount     Float
+  discountAmount  Float?
+  netAmount       Float
+  status          String
+  paymentStatus   String
+  transactionId   Int
+  createdAt       DateTime      @default(now())
+  user            User          @relation(fields: [userId], references: [id])
+  orderItems      OrderedItem[]
+}
+
+model OrderedItem {
+  id        Int     @id @default(autoincrement())
+  orderId   Int
+  productId Int
+  quantity  Int
+  price     Float
+  order     Order   @relation(fields: [orderId], references: [id])
+  product   Product @relation(fields: [productId], references: [id])
+}
+
+model RefreshToken {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model PaymentMethod {
+  id   Int    @id @default(autoincrement())
+  type String
+}
+
+model Payment {
+  id              Int      @id @default(autoincrement())
+  paymentMethodId Int
+  orderId         Int
+  date            DateTime @default(now())
+  amount          Float
+  status          String
+}
+
+model UserReviews {
+  id        Int     @id @default(autoincrement())
+  userId    Int
+  productId Int
+  rating    Int
+  comment   String?
+  user      User    @relation(fields: [userId], references: [id])
+  product   Product @relation(fields: [productId], references: [id])
+}
+
+model Wishlist {
+  id        Int     @id @default(autoincrement())
+  userId    Int
+  productId Int
+  user      User    @relation(fields: [userId], references: [id])
+  product   Product @relation(fields: [productId], references: [id])
+}
+
+model Address {
+  id           Int     @id @default(autoincrement())
+  userId       Int
+  addressLine1 String
+  addressLine2 String
+  city         String
+  state        String
+  zipCode      String
+  country      String
+  user         User    @relation(fields: [userId], references: [id])
+}
+
+model Country {
+  id   Int    @id @default(autoincrement())
+  name String
+}
+
+model Category {
+  id      Int       @id @default(autoincrement())
+  name    String
+  status  String
+  Product Product[]
+}
+
+model Color {
+  id      Int    @id @default(autoincrement())
+  name    String
+  codeHex String
+}
