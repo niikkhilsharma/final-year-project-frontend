@@ -1,5 +1,4 @@
 import prisma from '@/lib/prisma'
-import { Prisma } from '@prisma/client'
 import { auth } from '@/auth'
 
 export async function POST(request: Request) {
@@ -24,7 +23,7 @@ export async function POST(request: Request) {
 			mainImage: body.mainImage,
 			price: Number(body.price),
 			stock: Number(body.quantity),
-			createdById: session.user?.id!,
+			createdById: session.user?.id as string,
 		},
 	})
 
