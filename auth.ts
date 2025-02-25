@@ -1,12 +1,19 @@
-import NextAuth from 'next-auth'
+import NextAuth, { CredentialsSignin } from 'next-auth'
 import Credentials from 'next-auth/providers/credentials'
-// Your own logic for dealing with plaintext password strings; be careful!
-import { saltAndHashPassword } from '@/utils/password'
 import { PrismaAdapter } from '@auth/prisma-adapter'
+import { compare } from 'bcryptjs'
 import prisma from '@/lib/prisma'
+
+class InvalidLoginError extends CredentialsSignin {
+	code = 'Invalid identifier or password'
+}
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
 	adapter: PrismaAdapter(prisma),
+	session: {
+		strategy: 'jwt',
+	},
+	pages: { signIn: '/auth/sign-in', signOut: '/auth/sign-out' },
 	providers: [
 		Credentials({
 			credentials: {
@@ -16,21 +23,39 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 			authorize: async credentials => {
 				let user = null
 
-				// logic to salt and hash password
-				const pwHash = saltAndHashPassword(credentials.password)
-
 				// logic to verify if the user exists
-				user = await getUserFromDb(credentials.email, pwHash)
+				user = await prisma.user.findUnique({
+					where: {
+						email: credentials.email as string,
+					},
+				})
 
 				if (!user) {
-					// No user found, so this is their first attempt to login
-					// Optionally, this is also the place you could do a user registration
-					throw new Error('Invalid credentials.')
+					return null
 				}
 
-				// return user object with their profile data
+				// logic to salt and hash password
+				const pwHash = await compare(credentials.password as string, user.password)
+
+				// if (pwHash) {
+
 				return user
+				// } else {
+				// 	throw new InvalidLoginError()
+				// }
 			},
 		}),
 	],
+	callbacks: {
+		async jwt({ user, token }) {
+			if (user) {
+				token.user = user
+			}
+			return token
+		},
+		async session({ session, token }: any) {
+			session.user = token.user
+			return session
+		},
+	},
 })

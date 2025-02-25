@@ -1,5 +1,5 @@
 {
-	"editor.selectionHighlight": false,
+	"editor.selectionHighlight": true,
 	"explorer.confirmDelete": false,
 	"files.autoSaveDelay": 1,
 	"explorer.confirmDragAndDrop": false,
@@ -36,7 +36,7 @@
 	"[css]": {
 		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
-	"editor.unicodeHighlight.invisibleCharacters": false,
+	"editor.unicodeHighlight.invisibleCharacters": true,
 	"[json]": {
 		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
@@ -64,7 +64,7 @@
 	"diffEditor.ignoreTrimWhitespace": false,
 	"editor.accessibilitySupport": "off",
 	"terminal.integrated.fontFamily": "monospace",
-	"editor.fontFamily": "Hack",
+	"editor.fontFamily": "Menlo, Monaco, 'Courier New', monospace",
 	"html.format.wrapLineLength": 150,
 	"editor.tabSize": 2,
 	"prettier.singleQuote": true,
@@ -97,5 +97,6 @@
 	"prettier.experimentalTernaries": true,
 	"prettier.bracketSameLine": true,
 	"extensions.ignoreRecommendations": true,
-	"editor.wordWrap": "on"
+	"editor.wordWrap": "on",
+	"postman.settings.dotenv-detection-notification-visibility": false
 }

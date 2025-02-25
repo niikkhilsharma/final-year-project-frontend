@@ -16,7 +16,7 @@ interface ProductContainer {
 	products: Product[]
 }
 
-const ProductSection: React.FC<{ productsContainer: ProductContainer }> = ({ productsContainer }) => {
+const ProductSection: React.FC<{ productsContainer: ProductContainer }> = async ({ productsContainer }) => {
 	return (
 		<div>
 			<MaxWidthWrapper className="my-20">
