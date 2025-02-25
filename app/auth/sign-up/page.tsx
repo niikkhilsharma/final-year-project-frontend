@@ -128,7 +128,7 @@ export default function SignUpPage() {
 										</FormControl>
 										<div className="space-y-1 leading-none">
 											<FormLabel>Are you a here to buy products?</FormLabel>
-											<FormDescription>Please check this if you're a customer</FormDescription>
+											<FormDescription>Please check this if you are a customer</FormDescription>
 										</div>
 									</FormItem>
 								)}
