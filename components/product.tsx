@@ -21,7 +21,7 @@ const ProductBox: React.FC<ProductProps> = ({ productUrl, heading, stars, price 
 				<p className="text-xl font-semibold">{heading}</p>
 				{stars !== undefined && <StarRating readOnly={true} rating={stars} totalStars={5} />}
 				<div className="flex items-center justify-start gap-2">
-					<p className="text-2xl font-semibold">${price}</p>
+					<p className="text-2xl font-semibold">₹{price}</p>
 				</div>
 			</div>
 		</div>

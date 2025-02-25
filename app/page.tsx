@@ -4,8 +4,12 @@ import Navbar from '@/components/homepage/navbar'
 import MaxWidthWrapper from '@/components/max-width-wrapper'
 import ProductSection from '@/components/product-section'
 import { Separator } from '@/components/ui/separator'
+import prisma from '@/lib/prisma'
+import ProductBox from '@/components/product'
+import SectionHeading from '@/components/section-heading'
+import { Button } from '@/components/ui/button'
 
-export default function Home() {
+export default async function Home() {
 	const productsContainer = {
 		containerHeading: 'NEW ARRIVALS',
 		products: [
@@ -90,6 +94,9 @@ export default function Home() {
 		],
 	}
 
+	const products = await prisma.product.findMany()
+	console.log(products)
+
 	return (
 		<div>
 			<Header />
@@ -100,6 +107,19 @@ export default function Home() {
 				<Separator />
 			</MaxWidthWrapper>
 			<ProductSection productsContainer={sellingContainer} />
+			<MaxWidthWrapper className="my-20">
+				<SectionHeading heading={'Latest Products'} className="mb-16 mt-20" />
+				<div className="flex gap-4 overflow-x-scroll">
+					{products.map((product, index) => (
+						<ProductBox key={index} productUrl={product.mainImage} heading={product.name} stars={5} price={product.price} />
+					))}
+				</div>
+				<div className="flex justify-center items-center mt-10">
+					<Button variant={'outline'} className="mx-auto rounded-full px-12">
+						View All
+					</Button>
+				</div>
+			</MaxWidthWrapper>
 		</div>
 	)
 }

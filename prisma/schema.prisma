@@ -23,21 +23,18 @@ model User {
   address       String?
   email         String          @unique
   password      String
-  gender        String
-  dob           DateTime
-  phoneNo       String
+  gender        String?
+  dob           DateTime?
+  phoneNo       String?
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
-  status        String
-  cart          Cart?
   orders        Order[]
-  reviews       UserReviews[]
-  wishlist      Wishlist[]
   refreshTokens RefreshToken[]
   Address       Address[]
   Account       Account[]
   Session       Session[]
   Authenticator Authenticator[]
+  Product       Product[]
 }
 
 model Account {
@@ -95,29 +92,32 @@ model Authenticator {
   @@id([userId, credentialID])
 }
 
-model Cart {
-  id       Int       @id @default(autoincrement())
-  userId   String    @unique
-  user     User      @relation(fields: [userId], references: [id])
-  products Product[]
+enum CategoryEnum {
+  Electronics
+  Clothing
+  Accessories
+  Home
+  Sports
+  Toys
+  Beauty
+  Books
 }
 
 model Product {
-  id          Int           @id @default(autoincrement())
+  id          String        @id @default(cuid())
   name        String
   description String
   price       Float
   stock       Int
+  createdById String
+  category    CategoryEnum
+  mainImage   String
+  images      String[]
+  OrderedItem OrderedItem[]
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
-  status      String
-  categoryId  Int
-  category    Category      @relation(fields: [categoryId], references: [id])
-  reviews     UserReviews[]
-  Cart        Cart?         @relation(fields: [cartId], references: [id])
-  cartId      Int?
-  OrderedItem OrderedItem[]
-  Wishlist    Wishlist[]
+  User        User?         @relation(fields: [userId], references: [id])
+  userId      String?
 }
 
 model Subscription {
@@ -129,7 +129,7 @@ model Subscription {
 }
 
 model Order {
-  id              Int           @id @default(autoincrement())
+  id              String        @id @default(cuid())
   userId          String
   paymentMethodId Int
   totalAmount     Float
@@ -144,9 +144,9 @@ model Order {
 }
 
 model OrderedItem {
-  id        Int     @id @default(autoincrement())
-  orderId   Int
-  productId Int
+  id        String  @id @default(cuid())
+  orderId   String
+  productId String
   quantity  Int
   price     Float
   order     Order   @relation(fields: [orderId], references: [id])
@@ -175,26 +175,8 @@ model Payment {
   status          String
 }
 
-model UserReviews {
-  id        Int     @id @default(autoincrement())
-  userId    String
-  productId Int
-  rating    Int
-  comment   String?
-  user      User    @relation(fields: [userId], references: [id])
-  product   Product @relation(fields: [productId], references: [id])
-}
-
-model Wishlist {
-  id        Int     @id @default(autoincrement())
-  userId    String
-  productId Int
-  user      User    @relation(fields: [userId], references: [id])
-  product   Product @relation(fields: [productId], references: [id])
-}
-
 model Address {
-  id           Int    @id @default(autoincrement())
+  id           String @id @default(cuid())
   userId       String
   addressLine1 String
   addressLine2 String
@@ -206,19 +188,12 @@ model Address {
 }
 
 model Country {
-  id   Int    @id @default(autoincrement())
+  id   String @id @default(cuid())
   name String
 }
 
-model Category {
-  id      Int       @id @default(autoincrement())
-  name    String
-  status  String
-  Product Product[]
-}
-
 model Color {
-  id      Int    @id @default(autoincrement())
+  id      String @id @default(cuid())
   name    String
   codeHex String
 }

@@ -1,52 +1,71 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { Dialog } from '@headlessui/react'
 import { X, Upload, ImageIcon } from 'lucide-react'
 import Image from 'next/image'
+import { uploadToCloudinary } from '@/lib/function'
 
 type UploadedImage = {
-	file: File
-	preview: string
+	url: string
 	isMain: boolean
 }
 
-export default function ProductImageUpload() {
+export default function ProductImageUpload({ onUploadComplete }: { onUploadComplete: (urls: string[]) => void }) {
 	const [images, setImages] = useState<UploadedImage[]>([])
 	const [isOpen, setIsOpen] = useState(false)
-	const [currentUploadIndex, setCurrentUploadIndex] = useState<number | null>(null)
 
-	const onDrop = (acceptedFiles: File[]) => {
-		const newImages = acceptedFiles.map(file => ({
-			file,
-			preview: URL.createObjectURL(file),
-			isMain: false,
-		}))
-		setImages(prev => {
-			const updatedImages = [...prev, ...newImages].slice(0, 10)
-			if (updatedImages.length === 1) {
-				updatedImages[0].isMain = true
-			}
-			return updatedImages
-		})
-		setIsOpen(false)
+	// Only update the parent when our state changes - not during render
+	useEffect(() => {
+		const urls = images.map(img => img.url)
+		onUploadComplete(urls)
+	}, [images, onUploadComplete])
+
+	const onDrop = async (acceptedFiles: File[]) => {
+		try {
+			// Upload each image to Cloudinary and collect URLs
+			const uploadPromises = acceptedFiles.map(async file => {
+				const url = await uploadToCloudinary(file)
+				return {
+					url,
+					isMain: false,
+				}
+			})
+
+			const newUploadedImages = await Promise.all(uploadPromises)
+
+			// Update state with new images
+			setImages(prev => {
+				const updatedImages = [...prev, ...newUploadedImages].slice(0, 10)
+				// Set first image as main if there wasn't one before
+				if (updatedImages.length > 0 && !updatedImages.some(img => img.isMain)) {
+					updatedImages[0].isMain = true
+				}
+				return updatedImages
+			})
+
+			setIsOpen(false)
+		} catch (error) {
+			console.error('Error uploading images:', error)
+		}
 	}
 
 	const { getRootProps, getInputProps } = useDropzone({
 		onDrop,
-		accept: {
-			'image/*': [],
-		},
+		accept: { 'image/*': [] },
 		multiple: true,
 	})
 
 	const removeImage = (index: number) => {
 		setImages(prev => {
 			const newImages = prev.filter((_, i) => i !== index)
+
+			// If we removed the main image and there are other images, make the first one main
 			if (prev[index].isMain && newImages.length > 0) {
 				newImages[0].isMain = true
 			}
+
 			return newImages
 		})
 	}
@@ -63,18 +82,10 @@ export default function ProductImageUpload() {
 					<div
 						key={index}
 						className="aspect-square border-2 border-dashed rounded-lg flex items-center justify-center cursor-pointer hover:bg-gray-50 transition-colors"
-						onClick={() => {
-							setCurrentUploadIndex(index)
-							setIsOpen(true)
-						}}>
+						onClick={() => setIsOpen(true)}>
 						{images[index] ? (
 							<div className="relative w-full h-full">
-								<Image
-									src={images[index].preview || '/placeholder.svg'}
-									alt={`Product image ${index + 1}`}
-									fill
-									className="object-cover rounded-lg"
-								/>
+								<Image src={images[index].url} alt={`Product image ${index + 1}`} fill className="object-cover rounded-lg" />
 								<button
 									className="absolute top-1 right-1 bg-white rounded-full p-1 shadow-md"
 									onClick={e => {
