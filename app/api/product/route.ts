@@ -3,35 +3,40 @@ import { NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
 import { CategoryEnum } from '@prisma/client'
 // const prisma = new PrismaClient()
-type WhereClause = { name: string; category: CategoryEnum }
+
+type WhereClauseType = { category?: CategoryEnum }
 
 export async function GET(req: Request) {
 	try {
 		const { searchParams } = new URL(req.url)
 		const name = searchParams.get('name')
+
+		if (!name) return NextResponse.json({ message: 'No name provided' }, { status: 400 })
+
 		const category = searchParams.get('category')
-		// const color = searchParams.get('color')
-		// const minPrice = searchParams.get('minPrice')
-		// const maxPrice = searchParams.get('maxPrice')
-		// const stockAvailable = searchParams.get('stock') // 'true' or 'false'
 
-		let whereClause: Partial<WhereClause> = {}
+		let whereClause: WhereClauseType = {}
 
-		if (name) whereClause.name = name
 		if (category) whereClause.category = category as CategoryEnum
-		// if (color) whereClause.colors = { has: color } // 'colors' is an array in Prisma
-		// if (minPrice) whereClause.price = { gte: parseFloat(minPrice) }
-		// if (maxPrice) whereClause.price = { lte: parseFloat(maxPrice) }
-		// if (stockAvailable === 'true') whereClause.stock = { gt: 0 }
-		// if (stockAvailable === 'false') whereClause.stock = 0
+		console.log(whereClause)
 
-		const products = await prisma.product.findMany({ where: whereClause })
+		let products
 
-		if (products.length === 0) {
+		if (Object.keys(whereClause).length !== 0) {
+			products = await prisma.product.findMany({ where: whereClause })
+			console.log(products)
+		} else {
+			products = await prisma.product.findMany()
+		}
+
+		const filteredProducts = products.filter(product => product.name.toLowerCase().includes(name?.toLowerCase()))
+		console.log(filteredProducts)
+
+		if (filteredProducts.length === 0) {
 			return NextResponse.json({ message: 'No matching products found' }, { status: 404 })
 		}
 
-		return NextResponse.json({ products })
+		return NextResponse.json({ filteredProducts })
 	} catch (error) {
 		console.error('Error fetching products:', error)
 		return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
