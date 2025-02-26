@@ -13,6 +13,17 @@ enum UserRole {
   Admin
 }
 
+model Shop {
+  id        String   @id @default(cuid())
+  name      String
+  url       String
+  address   String
+  mainImage String
+  images    String[]
+  userId    String   @unique
+  User      User     @relation(fields: [userId], references: [id])
+}
+
 model User {
   id            String          @id @default(cuid())
   role          UserRole
@@ -28,6 +39,8 @@ model User {
   phoneNo       String?
   createdAt     DateTime        @default(now())
   updatedAt     DateTime        @updatedAt
+  shopId        String?
+  Shop          Shop?
   orders        Order[]
   refreshTokens RefreshToken[]
   Address       Address[]
