@@ -4,12 +4,8 @@ import { PrismaAdapter } from '@auth/prisma-adapter'
 import { compare } from 'bcryptjs'
 import prisma from '@/lib/prisma'
 
-class InvalidLoginError extends CredentialsSignin {
-	code = 'Invalid identifier or password'
-}
-
 export const { handlers, signIn, signOut, auth } = NextAuth({
-	adapter: PrismaAdapter(prisma),
+	adapter: PrismaAdapter(prisma) as unknown as import('next-auth/adapters').Adapter,
 	session: {
 		strategy: 'jwt',
 	},

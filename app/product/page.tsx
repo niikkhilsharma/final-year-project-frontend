@@ -2,8 +2,8 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import { Star, Minus, Plus, Facebook, Instagram, Youtube, ChevronDown } from 'lucide-react'
-import React, { useState, useEffect } from 'react'
+import { Star, Minus, Plus, ChevronDown } from 'lucide-react'
+import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import axios from 'axios'
 import Header from '@/components/homepage/header'
@@ -109,6 +109,114 @@ const sellingContainer = {
 }
 
 export default function ProductPage() {
+	return (
+		<Suspense fallback={<div>Loading...</div>}>
+			<div className="flex flex-col min-h-screen">
+				<Header />
+
+				<header className="border-b border-gray-200 py-4">
+					<div className="container mx-auto px-4 flex items-center justify-between">
+						<div className="flex items-center gap-8">
+							<Link href="/" className="text-2xl font-bold">
+								SHOP.CO
+							</Link>
+							<nav className="hidden md:flex items-center gap-6">
+								<Link href="#" className="font-medium">
+									Shop ▾
+								</Link>
+								<Link href="#" className="font-medium">
+									On Sale
+								</Link>
+								<Link href="#" className="font-medium">
+									New Arrivals
+								</Link>
+								<Link href="#" className="font-medium">
+									Brands
+								</Link>
+							</nav>
+						</div>
+						<div className="flex items-center gap-4">
+							<div className="relative hidden md:block">
+								<input
+									type="text"
+									placeholder="Search for products..."
+									className="bg-[#f0f0f0] rounded-full py-2 px-4 pl-10 w-[300px]"
+								/>
+								<div className="absolute left-3 top-2.5">
+									<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path
+											d="M8.25 14.25C11.5637 14.25 14.25 11.5637 14.25 8.25C14.25 4.93629 11.5637 2.25 8.25 2.25C4.93629 2.25 2.25 4.93629 2.25 8.25C2.25 11.5637 4.93629 14.25 8.25 14.25Z"
+											stroke="#000000"
+											strokeWidth="1.5"
+											strokeLinecap="round"
+											strokeLinejoin="round"
+										/>
+										<path
+											d="M15.75 15.75L12.75 12.75"
+											stroke="#000000"
+											strokeWidth="1.5"
+											strokeLinecap="round"
+											strokeLinejoin="round"
+										/>
+									</svg>
+								</div>
+							</div>
+							<div className="flex items-center gap-4">
+								<button className="relative">
+									<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path
+											d="M9 22C9.55228 22 10 21.5523 10 21C10 20.4477 9.55228 20 9 20C8.44772 20 8 20.4477 8 21C8 21.5523 8.44772 22 9 22Z"
+											stroke="black"
+											strokeWidth="1.5"
+											strokeLinecap="round"
+											strokeLinejoin="round"
+										/>
+										<path
+											d="M20 22C20.5523 22 21 21.5523 21 21C21 20.4477 20.5523 20 20 20C19.4477 20 19 20.4477 19 21C19 21.5523 19.4477 22 20 22Z"
+											stroke="black"
+											strokeWidth="1.5"
+											strokeLinecap="round"
+											strokeLinejoin="round"
+										/>
+										<path
+											d="M1 1H5L7.68 14.39C7.77144 14.8504 8.02191 15.264 8.38755 15.5583C8.75318 15.8526 9.2107 16.009 9.68 16H19.4C19.8693 16.009 20.3268 15.8526 20.6925 15.5583C21.0581 15.264 21.3086 14.8504 21.4 14.39L23 6H6"
+											stroke="black"
+											strokeWidth="1.5"
+											strokeLinecap="round"
+											strokeLinejoin="round"
+										/>
+									</svg>
+								</button>
+								<button>
+									<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+										<path
+											d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21"
+											stroke="black"
+											strokeWidth="1.5"
+											strokeLinecap="round"
+											strokeLinejoin="round"
+										/>
+										<path
+											d="M12 11C14.2091 11 16 9.20914 16 7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7C8 9.20914 9.79086 11 12 11Z"
+											stroke="black"
+											strokeWidth="1.5"
+											strokeLinecap="round"
+											strokeLinejoin="round"
+										/>
+									</svg>
+								</button>
+							</div>
+						</div>
+					</div>
+				</header>
+
+				<Product />
+			</div>
+		</Suspense>
+	)
+}
+
+function Product() {
 	const params = useSearchParams()
 	const id = params.get('id')
 
@@ -126,108 +234,7 @@ export default function ProductPage() {
 	}, [])
 
 	return (
-		<div className="flex flex-col min-h-screen">
-			{/* Promo Banner */}
-			<Header />
-
-			{/* Header */}
-			<header className="border-b border-gray-200 py-4">
-				<div className="container mx-auto px-4 flex items-center justify-between">
-					<div className="flex items-center gap-8">
-						<Link href="/" className="text-2xl font-bold">
-							SHOP.CO
-						</Link>
-						<nav className="hidden md:flex items-center gap-6">
-							<Link href="#" className="font-medium">
-								Shop ▾
-							</Link>
-							<Link href="#" className="font-medium">
-								On Sale
-							</Link>
-							<Link href="#" className="font-medium">
-								New Arrivals
-							</Link>
-							<Link href="#" className="font-medium">
-								Brands
-							</Link>
-						</nav>
-					</div>
-					<div className="flex items-center gap-4">
-						<div className="relative hidden md:block">
-							<input
-								type="text"
-								placeholder="Search for products..."
-								className="bg-[#f0f0f0] rounded-full py-2 px-4 pl-10 w-[300px]"
-							/>
-							<div className="absolute left-3 top-2.5">
-								<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-									<path
-										d="M8.25 14.25C11.5637 14.25 14.25 11.5637 14.25 8.25C14.25 4.93629 11.5637 2.25 8.25 2.25C4.93629 2.25 2.25 4.93629 2.25 8.25C2.25 11.5637 4.93629 14.25 8.25 14.25Z"
-										stroke="#000000"
-										strokeWidth="1.5"
-										strokeLinecap="round"
-										strokeLinejoin="round"
-									/>
-									<path
-										d="M15.75 15.75L12.75 12.75"
-										stroke="#000000"
-										strokeWidth="1.5"
-										strokeLinecap="round"
-										strokeLinejoin="round"
-									/>
-								</svg>
-							</div>
-						</div>
-						<div className="flex items-center gap-4">
-							<button className="relative">
-								<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-									<path
-										d="M9 22C9.55228 22 10 21.5523 10 21C10 20.4477 9.55228 20 9 20C8.44772 20 8 20.4477 8 21C8 21.5523 8.44772 22 9 22Z"
-										stroke="black"
-										strokeWidth="1.5"
-										strokeLinecap="round"
-										strokeLinejoin="round"
-									/>
-									<path
-										d="M20 22C20.5523 22 21 21.5523 21 21C21 20.4477 20.5523 20 20 20C19.4477 20 19 20.4477 19 21C19 21.5523 19.4477 22 20 22Z"
-										stroke="black"
-										strokeWidth="1.5"
-										strokeLinecap="round"
-										strokeLinejoin="round"
-									/>
-									<path
-										d="M1 1H5L7.68 14.39C7.77144 14.8504 8.02191 15.264 8.38755 15.5583C8.75318 15.8526 9.2107 16.009 9.68 16H19.4C19.8693 16.009 20.3268 15.8526 20.6925 15.5583C21.0581 15.264 21.3086 14.8504 21.4 14.39L23 6H6"
-										stroke="black"
-										strokeWidth="1.5"
-										strokeLinecap="round"
-										strokeLinejoin="round"
-									/>
-								</svg>
-							</button>
-							<button>
-								<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-									<path
-										d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21"
-										stroke="black"
-										strokeWidth="1.5"
-										strokeLinecap="round"
-										strokeLinejoin="round"
-									/>
-									<path
-										d="M12 11C14.2091 11 16 9.20914 16 7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7C8 9.20914 9.79086 11 12 11Z"
-										stroke="black"
-										strokeWidth="1.5"
-										strokeLinecap="round"
-										strokeLinejoin="round"
-									/>
-								</svg>
-							</button>
-						</div>
-					</div>
-				</div>
-			</header>
-
-			{/* Main Content */}
+		<>
 			{productData && Object.keys(productData).length > 0 ? (
 				<main className="flex-1 py-8">
 					<div className="container mx-auto px-4">
@@ -367,8 +374,8 @@ export default function ProductPage() {
 										<button className="text-gray-400">•••</button>
 									</div>
 									<p className="text-sm text-gray-600 mt-2">
-										"I absolutely love this t-shirt! The design is unique and the fabric feels so comfortable. As a fellow designer, I
-										appreciate the attention to detail, it's become my favorite go-to shirt."
+										I absolutely love this t-shirt! The design is unique and the fabric feels so comfortable. As a fellow designer, I
+										appreciate the attention to detail, it&apos;s become my favorite go-to shirt.
 									</p>
 									<p className="text-xs text-gray-500 mt-4">Posted on August 14, 2023</p>
 								</div>
@@ -393,8 +400,8 @@ export default function ProductPage() {
 										<button className="text-gray-400">•••</button>
 									</div>
 									<p className="text-sm text-gray-600 mt-2">
-										"The t-shirt exceeded my expectations! The colors are vibrant and the print quality is top-notch. Being a UI/UX
-										designer myself, I'm quite picky about aesthetics, and this t-shirt definitely gets a thumbs up from me."
+										The t-shirt exceeded my expectations! The colors are vibrant and the print quality is top-notch. Being a UI/UX
+										designer myself, I&apos;m quite picky about aesthetics, and this t-shirt definitely gets a thumbs up from me.
 									</p>
 									<p className="text-xs text-gray-500 mt-4">Posted on August 15, 2023</p>
 								</div>
@@ -419,8 +426,8 @@ export default function ProductPage() {
 										<button className="text-gray-400">•••</button>
 									</div>
 									<p className="text-sm text-gray-600 mt-2">
-										"This t-shirt is a must-have for anyone who appreciates good design. The minimalistic yet stylish pattern caught my
-										eye, and the fit is perfect. I can see the designer's touch in every aspect of this shirt."
+										This t-shirt is a must-have for anyone who appreciates good design. The minimalistic yet stylish pattern caught my
+										eye, and the fit is perfect. I can see the designer&apos;s touch in every aspect of this shirt.
 									</p>
 									<p className="text-xs text-gray-500 mt-4">Posted on August 16, 2023</p>
 								</div>
@@ -444,9 +451,9 @@ export default function ProductPage() {
 										<button className="text-gray-400">•••</button>
 									</div>
 									<p className="text-sm text-gray-600 mt-2">
-										"As a UI/UX enthusiast, I value simplicity and functionality. This t-shirt not only represents those principles but
-										also feels great to wear. It's evident that the designer poured their creativity into making this t-shirt stand
-										out."
+										As a UI/UX enthusiast, I value simplicity and functionality. This t-shirt not only represents those principles but
+										also feels great to wear. It&apos;s evident that the designer poured their creativity into making this t-shirt
+										stand out.
 									</p>
 									<p className="text-xs text-gray-500 mt-4">Posted on August 17, 2023</p>
 								</div>
@@ -471,8 +478,8 @@ export default function ProductPage() {
 										<button className="text-gray-400">•••</button>
 									</div>
 									<p className="text-sm text-gray-600 mt-2">
-										"This t-shirt is a fusion of comfort and creativity. The fabric is soft, and the design speaks volumes about the
-										designer's skill. It's like wearing a piece of art that reflects my passion for both design and fashion."
+										This t-shirt is a fusion of comfort and creativity. The fabric is soft, and the design speaks volumes about the
+										designer&apos;s skill. It&apos;s like wearing a piece of art that reflects my passion for both design and fashion.
 									</p>
 									<p className="text-xs text-gray-500 mt-4">Posted on August 18, 2023</p>
 								</div>
@@ -497,8 +504,8 @@ export default function ProductPage() {
 										<button className="text-gray-400">•••</button>
 									</div>
 									<p className="text-sm text-gray-600 mt-2">
-										"I'm not just wearing a t-shirt, I'm wearing a piece of design philosophy. The intricate details and thoughtful
-										layout of the design make this shirt a conversation-starter."
+										I&apos;m not just wearing a t-shirt, I&apos;m wearing a piece of design philosophy. The intricate details and
+										thoughtful layout of the design make this shirt a conversation-starter.
 									</p>
 									<p className="text-xs text-gray-500 mt-4">Posted on August 19, 2023</p>
 								</div>
@@ -551,6 +558,6 @@ export default function ProductPage() {
 			) : (
 				<div className="p-8 text-3xl font-semibold text-center">Loading...</div>
 			)}
-		</div>
+		</>
 	)
 }
