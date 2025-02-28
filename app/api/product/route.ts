@@ -8,6 +8,21 @@ export async function GET(req: Request) {
 	try {
 		const { searchParams } = new URL(req.url)
 		const name = searchParams.get('name')
+		const id = searchParams.get('id')
+		console.log(id)
+
+		if (id) {
+			const product = await prisma.product.findUnique({
+				where: {
+					id: id,
+				},
+			})
+			if (product) {
+				return NextResponse.json(product)
+			} else {
+				return NextResponse.json({ message: 'No product found with the given id' })
+			}
+		}
 
 		if (!name) return NextResponse.json({ message: 'No name provided' }, { status: 400 })
 
