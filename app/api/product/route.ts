@@ -28,7 +28,7 @@ export async function GET(req: Request) {
 
 		const category = searchParams.get('category')
 
-		let whereClause: WhereClauseType = {}
+		const whereClause: WhereClauseType = {}
 
 		if (category) whereClause.category = category as CategoryEnum
 		console.log(whereClause)
