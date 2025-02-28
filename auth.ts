@@ -1,8 +1,12 @@
-import NextAuth from 'next-auth'
+import NextAuth, { CredentialsSignin } from 'next-auth'
 import Credentials from 'next-auth/providers/credentials'
 import { PrismaAdapter } from '@auth/prisma-adapter'
 import { compare } from 'bcryptjs'
 import prisma from '@/lib/prisma'
+
+class InvalidLoginError extends CredentialsSignin {
+	code = 'Invalid identifier or password'
+}
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
 	adapter: PrismaAdapter(prisma) as any,
@@ -33,12 +37,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 				// logic to salt and hash password
 				const pwHash = await compare(credentials.password as string, user.password)
 
-				// if (pwHash) {
-
-				return user
-				// } else {
-				// 	throw new InvalidLoginError()
-				// }
+				if (pwHash) {
+					return user
+				} else {
+					throw new InvalidLoginError()
+				}
 			},
 		}),
 	],
