@@ -2,8 +2,10 @@
 import Image from 'next/image'
 import React from 'react'
 import StarRating from '@/components/start-rating'
+import Link from 'next/link'
 
 interface ProductProps {
+	id?: string
 	productUrl: string
 	heading: string
 	price: number
@@ -11,9 +13,9 @@ interface ProductProps {
 	stars?: number
 }
 
-const ProductBox: React.FC<ProductProps> = ({ productUrl, heading, stars, price }) => {
+const ProductBox: React.FC<ProductProps> = ({ id = '', productUrl, heading, stars, price }) => {
 	return (
-		<div>
+		<Link href={`/product?id=${id}`}>
 			<div className="rounded-3xl bg-primary-foreground overflow-hidden max-w-72 min-w-72 aspect-square">
 				<Image src={productUrl} width={400} height={400} className="object-contain" alt="product" />
 			</div>
@@ -24,7 +26,7 @@ const ProductBox: React.FC<ProductProps> = ({ productUrl, heading, stars, price 
 					<p className="text-2xl font-semibold">₹{price}</p>
 				</div>
 			</div>
-		</div>
+		</Link>
 	)
 }
 
