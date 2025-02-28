@@ -5,7 +5,7 @@ import { compare } from 'bcryptjs'
 import prisma from '@/lib/prisma'
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
-	adapter: PrismaAdapter(prisma) as unknown as import('next-auth/adapters').Adapter,
+	adapter: PrismaAdapter(prisma) as any,
 	session: {
 		strategy: 'jwt',
 	},
