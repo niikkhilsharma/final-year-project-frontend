@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Geist, Geist_Mono } from 'next/font/google'
 import { integralcf } from './fonts/integralcf'
 import './globals.css'
+import Providers from './providers'
 
 const geistSans = Geist({
 	variable: '--font-geist-sans',
@@ -25,7 +26,9 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en">
-			<body className={`${geistSans.variable} ${geistMono.variable} ${integralcf.variable} antialiased `}>{children}</body>
+			<body className={`${geistSans.variable} ${geistMono.variable} ${integralcf.variable} antialiased `}>
+				<Providers>{children}</Providers>
+			</body>
 		</html>
 	)
 }

@@ -101,11 +101,6 @@ export default async function Home() {
 			<Header />
 			<Navbar />
 			<Hero />
-			<ProductSection productsContainer={productsContainer} />
-			<MaxWidthWrapper>
-				<Separator />
-			</MaxWidthWrapper>
-			<ProductSection productsContainer={sellingContainer} />
 			<MaxWidthWrapper className="my-20">
 				<SectionHeading heading={'Latest Products'} className="mb-16 mt-20" />
 				<div className="flex gap-4 overflow-x-scroll">
