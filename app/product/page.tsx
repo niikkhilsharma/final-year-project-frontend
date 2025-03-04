@@ -110,7 +110,7 @@ const sellingContainer = {
 
 export default function ProductPage() {
 	return (
-		<Suspense fallback={<div>Loading...</div>}>
+		<Suspense fallback={<div>Loading Product...</div>}>
 			<div className="flex flex-col min-h-screen">
 				<Header />
 

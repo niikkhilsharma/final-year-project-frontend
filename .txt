@@ -1,0 +1,2 @@
+
+POSTGRES_PRISMA_URL=postgres://neondb_owner:npg_Ndp31QUwklTu@ep-tight-wave-a1rxeb6d-pooler.ap-southeast-1.aws.neon.tech/neondb?connect_timeout=15&sslmode=require
