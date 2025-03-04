@@ -4,11 +4,14 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { signIn } from 'next-auth/react'
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 
 const formSchema = z.object({
 	email: z.string().email().min(3, {
@@ -17,7 +20,12 @@ const formSchema = z.object({
 	password: z.string().min(8, { message: 'Password must be atleast 8 characters long' }),
 })
 
-export default function SignInPage() {
+export default function SignIn() {
+	const params = useSearchParams()
+	const error = params.get('error')
+	const [authError, setAuthError] = useState<string | null>(null)
+	const router = useRouter()
+
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
@@ -27,11 +35,18 @@ export default function SignInPage() {
 	})
 
 	async function onSubmit(values: z.infer<typeof formSchema>) {
-		await signIn('credentials', {
+		const res = await signIn('credentials', {
 			email: values.email,
 			password: values.password,
 			redirectTo: '/',
 		})
+
+		if (res?.error) {
+			setAuthError('Invalid email or password. Please try again.')
+		} else {
+			setAuthError(null)
+			router.push('/')
+		}
 	}
 
 	return (
@@ -72,10 +87,13 @@ export default function SignInPage() {
 							/>
 						</CardContent>
 						<CardFooter className="flex flex-col space-y-4">
+							{(authError || error === 'CredentialsSignin') && (
+								<p className="text-red-500 text-start text-sm">Invalid email or password. Please try again.</p>
+							)}
 							<Button className="w-full">Sign in</Button>
 							<div className="text-sm text-center text-gray-600">
 								Don&apos;t have an account?{' '}
-								<Link href="/auth/sign-up" className="text-primary hover:underline">
+								<Link href="/customer/sign-up" className="text-primary hover:underline">
 									Sign up
 								</Link>
 							</div>

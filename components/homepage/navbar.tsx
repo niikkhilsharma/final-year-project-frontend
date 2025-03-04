@@ -1,18 +1,14 @@
+import { auth } from '@/auth'
 import Link from 'next/link'
 import { ShoppingCart, Search, Heart, Menu, ArrowRight } from 'lucide-react'
-import { Button } from '@/components/ui/button'
+import { Button, buttonVariants } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
-import {
-	DropdownMenu,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuLabel,
-	DropdownMenuSeparator,
-	DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 
 const Navbar = async () => {
+	const session = await auth()
+
 	return (
 		<div className="border-b">
 			<div className="container px-4 mx-auto sticky top-0 z-50 w-full bg-background">
@@ -45,18 +41,24 @@ const Navbar = async () => {
 							<span className="sr-only">Cart</span>
 							<Badge className="absolute -top-1 -right-1 h-5 w-5 p-0 flex items-center justify-center">0</Badge>
 						</Button>
-						<Button>Sign In</Button>
-						<DropdownMenu>
-							<DropdownMenuTrigger asChild>
-								<Button variant={'outline'}>
-									Continue as Seller <ArrowRight />
-								</Button>
-							</DropdownMenuTrigger>
-							<DropdownMenuContent>
-								<DropdownMenuItem>Create an account</DropdownMenuItem>
-								<DropdownMenuItem>Already a seller</DropdownMenuItem>
-							</DropdownMenuContent>
-						</DropdownMenu>
+						{!session && (
+							<Link href={'/customer/sign-in'} className={buttonVariants({ variant: 'default' })}>
+								Sign In
+							</Link>
+						)}
+						{!session && (
+							<DropdownMenu>
+								<DropdownMenuTrigger asChild>
+									<Button variant={'outline'}>
+										Continue as Seller <ArrowRight />
+									</Button>
+								</DropdownMenuTrigger>
+								<DropdownMenuContent>
+									<DropdownMenuItem>Create an account</DropdownMenuItem>
+									<DropdownMenuItem>Already a seller</DropdownMenuItem>
+								</DropdownMenuContent>
+							</DropdownMenu>
+						)}
 					</div>
 					<Button variant="ghost" size="icon" className="md:hidden">
 						<Menu className="h-5 w-5" />

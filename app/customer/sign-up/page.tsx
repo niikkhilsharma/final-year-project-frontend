@@ -7,8 +7,8 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import { Checkbox } from '@/components/ui/checkbox'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
+import { signIn } from 'next-auth/react'
 
 const formSchema = z.object({
 	firstName: z.string().min(3, {
@@ -21,7 +21,6 @@ const formSchema = z.object({
 		message: 'Email must be at least 3 characters long.',
 	}),
 	password: z.string().min(8, { message: 'Password must be atleast 8 characters long' }),
-	isCustomer: z.boolean(),
 })
 
 export default function SignUpPage() {
@@ -32,18 +31,17 @@ export default function SignUpPage() {
 			lastName: '',
 			email: '',
 			password: '',
-			isCustomer: false,
 		},
 	})
 
 	async function onSubmit(values: z.infer<typeof formSchema>) {
-		const { firstName, lastName, email, password, isCustomer } = values
+		const { firstName, lastName, email, password } = values
 		const data = {
 			firstName,
 			lastName,
 			email,
 			password,
-			isCustomer,
+			isCustomer: true,
 		}
 
 		const responseData = await fetch('/api/auth/signup', {
@@ -53,7 +51,16 @@ export default function SignUpPage() {
 			},
 			body: JSON.stringify(data),
 		})
-		console.log(responseData)
+
+		if (responseData.ok) {
+			await signIn('credentials', {
+				email: data.email,
+				password: data.password,
+				redirectTo: '/',
+			})
+		} else {
+			alert('Something went wrong. Please try again.')
+		}
 	}
 
 	return (
@@ -64,7 +71,7 @@ export default function SignUpPage() {
 					<CardDescription>Enter your information to create a new account</CardDescription>
 				</CardHeader>
 				<Form {...form}>
-					<form onSubmit={form.handleSubmit(onSubmit)} className="">
+					<form onSubmit={form.handleSubmit(onSubmit)}>
 						<CardContent className="space-y-4">
 							<FormField
 								control={form.control}
@@ -118,7 +125,7 @@ export default function SignUpPage() {
 									</FormItem>
 								)}
 							/>
-							<FormField
+							{/* <FormField
 								control={form.control}
 								name="isCustomer"
 								render={({ field }) => (
@@ -132,7 +139,7 @@ export default function SignUpPage() {
 										</div>
 									</FormItem>
 								)}
-							/>
+							/> */}
 						</CardContent>
 
 						<CardFooter className="flex flex-col space-y-4">
