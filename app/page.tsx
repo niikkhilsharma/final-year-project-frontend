@@ -1,7 +1,8 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { ShoppingCart, Heart, ChevronRight, ArrowRight } from 'lucide-react'
+import { ShoppingCart, Heart, ChevronRight, ArrowRight, QrCode } from 'lucide-react'
 
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
@@ -92,6 +93,22 @@ export default function Page() {
 												{'☆'.repeat(5 - product.rating)}
 												<span className="ml-1 text-muted-foreground">({product.reviews})</span>
 											</div>
+											<Dialog>
+												<DialogTrigger asChild>
+													<Button size={'icon'} variant={'secondary'}>
+														<QrCode />
+													</Button>
+												</DialogTrigger>
+												<DialogContent>
+													<DialogHeader>
+														<DialogTitle>{product.name}</DialogTitle>
+														<DialogDescription>
+															<Image src={product.image} alt={product.name} width={300} height={300} className="w-full h-full" />
+														</DialogDescription>
+													</DialogHeader>
+												</DialogContent>
+											</Dialog>
+
 											<Button size="sm" variant="secondary">
 												<ShoppingCart className="mr-2 h-4 w-4" />
 												Add
@@ -201,19 +218,19 @@ export default function Page() {
 const categories = [
 	{
 		name: 'Clothing',
-		image: '/placeholder.svg?height=300&width=300',
+		image: '/images/hero-img.png',
 	},
 	{
 		name: 'Shoes',
-		image: '/placeholder.svg?height=300&width=300',
+		image: '/images/hero-img.png',
 	},
 	{
 		name: 'Accessories',
-		image: '/placeholder.svg?height=300&width=300',
+		image: '/images/hero-img.png',
 	},
 	{
 		name: 'Home',
-		image: '/placeholder.svg?height=300&width=300',
+		image: '/images/hero-img.png',
 	},
 ]
 
@@ -226,7 +243,7 @@ const products = [
 		discount: 15,
 		rating: 4,
 		reviews: 42,
-		image: '/placeholder.svg?height=300&width=300',
+		image: '/images/hero-img.png',
 	},
 	{
 		id: 2,
@@ -236,7 +253,7 @@ const products = [
 		discount: null,
 		rating: 5,
 		reviews: 18,
-		image: '/placeholder.svg?height=300&width=300',
+		image: '/images/hero-img.png',
 	},
 	{
 		id: 3,
@@ -246,7 +263,7 @@ const products = [
 		discount: 20,
 		rating: 4,
 		reviews: 36,
-		image: '/placeholder.svg?height=300&width=300',
+		image: '/images/hero-img.png',
 	},
 	{
 		id: 4,
@@ -256,7 +273,7 @@ const products = [
 		discount: null,
 		rating: 3,
 		reviews: 12,
-		image: '/placeholder.svg?height=300&width=300',
+		image: '/images/hero-img.png',
 	},
 ]
 
