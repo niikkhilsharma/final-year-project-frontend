@@ -1,12 +1,8 @@
-import NextAuth, { CredentialsSignin } from 'next-auth'
-import Credentials from 'next-auth/providers/credentials'
+import NextAuth from 'next-auth'
 import { PrismaAdapter } from '@auth/prisma-adapter'
-import { compare } from 'bcryptjs'
-import prisma from '@/lib/prisma'
 
-class InvalidLoginError extends CredentialsSignin {
-	code = 'Invalid identifier or password'
-}
+import prisma from '@/lib/prisma'
+import authConfig from './auth.config'
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
 	adapter: PrismaAdapter(prisma) as any,
@@ -14,47 +10,5 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 		strategy: 'jwt',
 	},
 	pages: { signIn: '/customer/sign-in', signOut: '/customer/sign-out' },
-	providers: [
-		Credentials({
-			credentials: {
-				email: {},
-				password: {},
-			},
-			authorize: async credentials => {
-				let user = null
-
-				// logic to verify if the user exists
-				user = await prisma.user.findUnique({
-					where: {
-						email: credentials.email as string,
-					},
-				})
-
-				if (!user) {
-					return null
-				}
-
-				// logic to salt and hash password
-				const pwHash = await compare(credentials.password as string, user.password)
-
-				if (pwHash) {
-					return user
-				} else {
-					throw new InvalidLoginError()
-				}
-			},
-		}),
-	],
-	callbacks: {
-		async jwt({ user, token }) {
-			if (user) {
-				token.user = user
-			}
-			return token
-		},
-		async session({ session, token }: any) {
-			session.user = token.user
-			return session
-		},
-	},
+	...authConfig,
 })
