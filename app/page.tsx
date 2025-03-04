@@ -135,7 +135,7 @@ export default function Page() {
 									<Badge className="inline-block">Limited Time</Badge>
 									<h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight">Summer Sale Up To 50% Off</h2>
 									<p className="max-w-[600px] text-muted-foreground md:text-xl">
-										Don't miss out on our biggest sale of the season. Get your favorite items at unbeatable prices.
+										Don&apos;t miss out on our biggest sale of the season. Get your favorite items at unbeatable prices.
 									</p>
 								</div>
 								<div className="flex flex-col gap-2 min-[400px]:flex-row">
@@ -159,7 +159,7 @@ export default function Page() {
 							<div className="space-y-2">
 								<h2 className="text-3xl font-bold tracking-tighter md:text-4xl">What Our Customers Say</h2>
 								<p className="max-w-[900px] text-muted-foreground md:text-xl">
-									Don't just take our word for it. Here's what our customers have to say.
+									Don&apos;t just take our word for it. Here&apos;s what our customers have to say.
 								</p>
 							</div>
 						</div>

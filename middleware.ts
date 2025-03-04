@@ -2,7 +2,22 @@ import { NextResponse } from 'next/server'
 import { auth } from '@/auth'
 
 export default auth(async function middleware(request) {
-	if (!request.auth && request.nextUrl.pathname !== '/login') {
+	const allowedPaths = ['/customer/sign-in', '/customer/sign-up', '/seller/sign-in', '/seller/register']
+
+	// Check if the request path is in the allowed list
+	if (allowedPaths.includes(request.nextUrl.pathname)) {
+		return NextResponse.next()
+	}
+
+	// Redirect to login if not authenticated and not on the login page
+	if (!request.auth) {
+		const requestedUrl = request.nextUrl.pathname
+		const urls = requestedUrl.split('/')
+		if (urls[1] === 'seller') {
+			const newUrl = new URL('/seller/sign-in', request.nextUrl.origin)
+			return Response.redirect(newUrl)
+		}
+
 		const newUrl = new URL('/api/auth/signin', request.nextUrl.origin)
 		return Response.redirect(newUrl)
 	}

@@ -231,7 +231,7 @@ function Product() {
 		}
 
 		getProducts()
-	}, [])
+	}, [id])
 
 	return (
 		<>

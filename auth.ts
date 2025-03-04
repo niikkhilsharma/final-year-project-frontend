@@ -13,7 +13,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 	session: {
 		strategy: 'jwt',
 	},
-	pages: { signIn: '/auth/sign-in', signOut: '/auth/sign-out' },
+	pages: { signIn: '/customer/sign-in', signOut: '/customer/sign-out' },
 	providers: [
 		Credentials({
 			credentials: {
