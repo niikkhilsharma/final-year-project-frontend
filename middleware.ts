@@ -1,5 +1,9 @@
+import NextAuth from 'next-auth'
+import authConfig from './auth.config'
+
 import { NextResponse } from 'next/server'
-import { auth } from '@/auth'
+
+const { auth } = NextAuth(authConfig)
 
 export default auth(async function middleware(request) {
 	const allowedPaths = ['/customer/sign-in', '/customer/sign-up', '/seller/sign-in', '/seller/register']
