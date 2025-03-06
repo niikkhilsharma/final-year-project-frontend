@@ -7,7 +7,7 @@ import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import axios from 'axios'
 import Header from '@/components/homepage/header'
-import ProductBox from '@/components/product'
+import ProductCard from '@/components/product-card'
 
 type product = {
 	id: string
@@ -521,7 +521,7 @@ function Product() {
 							<h2 className="text-2xl font-bold text-center mb-8">YOU MIGHT ALSO LIKE</h2>
 							<div className="flex gap-4 overflow-x-scroll">
 								{sellingContainer.products.map((product, index) => (
-									<ProductBox
+									<ProductCard
 										key={index}
 										productUrl={product.productUrl}
 										heading={product.heading}
@@ -533,7 +533,7 @@ function Product() {
 						</div>
 						<div className="flex gap-4 overflow-x-scroll mt-10">
 							{productsContainer.products.map((product, index) => (
-								<ProductBox
+								<ProductCard
 									key={index}
 									productUrl={product.productUrl}
 									heading={product.heading}
