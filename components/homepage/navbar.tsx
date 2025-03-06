@@ -55,7 +55,9 @@ const Navbar = async () => {
 								</DropdownMenuTrigger>
 								<DropdownMenuContent>
 									<DropdownMenuItem>Create an account</DropdownMenuItem>
-									<DropdownMenuItem>Already a seller</DropdownMenuItem>
+									<DropdownMenuItem>
+										<Link href={'/seller/sign-in'}>Already a seller</Link>
+									</DropdownMenuItem>
 								</DropdownMenuContent>
 							</DropdownMenu>
 						)}
