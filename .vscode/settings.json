@@ -64,7 +64,6 @@
 	"diffEditor.ignoreTrimWhitespace": false,
 	"editor.accessibilitySupport": "off",
 	"terminal.integrated.fontFamily": "monospace",
-	"editor.fontFamily": "Menlo, Monaco, 'Courier New', monospace",
 	"html.format.wrapLineLength": 150,
 	"editor.tabSize": 2,
 	"prettier.singleQuote": true,

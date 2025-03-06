@@ -5,11 +5,9 @@ import { ShoppingCart, Heart, ChevronRight, ArrowRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
-import Navbar from '@/components/homepage/navbar'
 import Hero from '@/components/homepage/hero'
 import Footer from '@/components/homepage/footer'
 import prisma from '@/lib/prisma'
-import { headers } from 'next/headers'
 import Qr from '@/components/qr'
 
 export default async function Page() {
@@ -18,7 +16,6 @@ export default async function Page() {
 	const products = await prisma.product.findMany()
 	return (
 		<div className="flex min-h-[100svh] flex-col">
-			<Navbar />
 			<main className="flex-1">
 				<Hero />
 
@@ -87,8 +84,7 @@ export default async function Page() {
 									<div className="p-4">
 										<h3 className="font-medium">{product.name}</h3>
 										<div className="flex items-center gap-2 mt-1">
-											<span className="font-medium">${product.price.toFixed(2)}</span>
-											{product.price && <span className="text-sm text-muted-foreground line-through">${product.price.toFixed(2)}</span>}
+											{product.price && <span className="font-medium">₹{product.price.toFixed(2)}</span>}
 										</div>
 										<div className="mt-4 flex items-center justify-between">
 											{/* <div className="flex items-center text-sm text-yellow-500">

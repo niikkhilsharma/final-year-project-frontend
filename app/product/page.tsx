@@ -8,20 +8,13 @@ import { useSearchParams } from 'next/navigation'
 import axios from 'axios'
 import Header from '@/components/homepage/header'
 import ProductBox from '@/components/product'
+import type { Product, Color, Size } from '@prisma/client'
+import { cn } from '@/lib/utils'
+import Navbar from '@/components/homepage/navbar'
 
-type product = {
-	id: string
-	name: string
-	description: string
-	price: number
-	stock: number
-	createdById: string
-	category: string
-	mainImage: string
-	images: string[]
-	createdAt: string
-	updatedAt: string
-	userId: null | string
+type product = Product & {
+	colors: Color[]
+	Sizes: Size[]
 }
 
 const productsContainer = {
@@ -111,107 +104,7 @@ const sellingContainer = {
 export default function ProductPage() {
 	return (
 		<Suspense fallback={<div>Loading Product...</div>}>
-			<div className="flex flex-col min-h-screen">
-				<Header />
-
-				<header className="border-b border-gray-200 py-4">
-					<div className="container mx-auto px-4 flex items-center justify-between">
-						<div className="flex items-center gap-8">
-							<Link href="/" className="text-2xl font-bold">
-								SHOP.CO
-							</Link>
-							<nav className="hidden md:flex items-center gap-6">
-								<Link href="#" className="font-medium">
-									Shop ▾
-								</Link>
-								<Link href="#" className="font-medium">
-									On Sale
-								</Link>
-								<Link href="#" className="font-medium">
-									New Arrivals
-								</Link>
-								<Link href="#" className="font-medium">
-									Brands
-								</Link>
-							</nav>
-						</div>
-						<div className="flex items-center gap-4">
-							<div className="relative hidden md:block">
-								<input
-									type="text"
-									placeholder="Search for products..."
-									className="bg-[#f0f0f0] rounded-full py-2 px-4 pl-10 w-[300px]"
-								/>
-								<div className="absolute left-3 top-2.5">
-									<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-										<path
-											d="M8.25 14.25C11.5637 14.25 14.25 11.5637 14.25 8.25C14.25 4.93629 11.5637 2.25 8.25 2.25C4.93629 2.25 2.25 4.93629 2.25 8.25C2.25 11.5637 4.93629 14.25 8.25 14.25Z"
-											stroke="#000000"
-											strokeWidth="1.5"
-											strokeLinecap="round"
-											strokeLinejoin="round"
-										/>
-										<path
-											d="M15.75 15.75L12.75 12.75"
-											stroke="#000000"
-											strokeWidth="1.5"
-											strokeLinecap="round"
-											strokeLinejoin="round"
-										/>
-									</svg>
-								</div>
-							</div>
-							<div className="flex items-center gap-4">
-								<button className="relative">
-									<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-										<path
-											d="M9 22C9.55228 22 10 21.5523 10 21C10 20.4477 9.55228 20 9 20C8.44772 20 8 20.4477 8 21C8 21.5523 8.44772 22 9 22Z"
-											stroke="black"
-											strokeWidth="1.5"
-											strokeLinecap="round"
-											strokeLinejoin="round"
-										/>
-										<path
-											d="M20 22C20.5523 22 21 21.5523 21 21C21 20.4477 20.5523 20 20 20C19.4477 20 19 20.4477 19 21C19 21.5523 19.4477 22 20 22Z"
-											stroke="black"
-											strokeWidth="1.5"
-											strokeLinecap="round"
-											strokeLinejoin="round"
-										/>
-										<path
-											d="M1 1H5L7.68 14.39C7.77144 14.8504 8.02191 15.264 8.38755 15.5583C8.75318 15.8526 9.2107 16.009 9.68 16H19.4C19.8693 16.009 20.3268 15.8526 20.6925 15.5583C21.0581 15.264 21.3086 14.8504 21.4 14.39L23 6H6"
-											stroke="black"
-											strokeWidth="1.5"
-											strokeLinecap="round"
-											strokeLinejoin="round"
-										/>
-									</svg>
-								</button>
-								<button>
-									<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-										<path
-											d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21"
-											stroke="black"
-											strokeWidth="1.5"
-											strokeLinecap="round"
-											strokeLinejoin="round"
-										/>
-										<path
-											d="M12 11C14.2091 11 16 9.20914 16 7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7C8 9.20914 9.79086 11 12 11Z"
-											stroke="black"
-											strokeWidth="1.5"
-											strokeLinecap="round"
-											strokeLinejoin="round"
-										/>
-									</svg>
-								</button>
-							</div>
-						</div>
-					</div>
-				</header>
-
-				<Product />
-			</div>
+			<Product />
 		</Suspense>
 	)
 }
@@ -225,7 +118,7 @@ function Product() {
 	useEffect(() => {
 		const getProducts = async () => {
 			const response = await axios.get(`/api/product?id=${id}`)
-			const data: product = await response.data
+			const data = await response.data
 			console.log(data)
 			setProductData(data)
 		}
@@ -286,9 +179,12 @@ function Product() {
 								<div className="mb-6">
 									<h3 className="font-medium mb-2">Select Colors</h3>
 									<div className="flex gap-2">
-										<button className="w-8 h-8 rounded-full bg-[#4f4631] ring-2 ring-offset-2 ring-black"></button>
-										<button className="w-8 h-8 rounded-full bg-[#314f4a]"></button>
-										<button className="w-8 h-8 rounded-full bg-[#31344f]"></button>
+										{productData.colors.map((color, indx) => (
+											<button
+												key={indx}
+												className={cn('w-8 h-8 rounded-full ring-2 ring-offset-1 ring-black hover:opacity-80')}
+												style={{ backgroundColor: color.codeHex }}></button>
+										))}
 									</div>
 								</div>
 
@@ -296,16 +192,17 @@ function Product() {
 								<div className="mb-6">
 									<h3 className="font-medium mb-2">Choose Size</h3>
 									<div className="flex gap-2">
-										<button className="px-4 py-2 border rounded-md text-sm">Small</button>
-										<button className="px-4 py-2 border rounded-md text-sm">Medium</button>
-										<button className="px-4 py-2 border rounded-md text-sm bg-black text-white">Large</button>
-										<button className="px-4 py-2 border rounded-md text-sm">X-Large</button>
+										{productData.Sizes.map((size, indx) => (
+											<button key={indx} className={cn('w-8 h-8 rounded-full ring-2 ring-offset-1 ring-black hover:opacity-80')}>
+												{size.sizeCode || size.waistSize || size.sizeNumber || `W: ${size.width} H: ${size.height}`}
+											</button>
+										))}
 									</div>
 								</div>
 
 								{/* Add to Cart */}
 								<div className="flex gap-4 mb-8">
-									<div className="flex items-center border rounded-md">
+									{/* <div className="flex items-center border rounded-md">
 										<button className="px-3 py-2">
 											<Minus className="w-5 h-5" />
 										</button>
@@ -313,7 +210,7 @@ function Product() {
 										<button className="px-3 py-2">
 											<Plus className="w-5 h-5" />
 										</button>
-									</div>
+									</div> */}
 									<button className="bg-black text-white rounded-md px-6 py-3 flex-1 font-medium">Add to Cart</button>
 								</div>
 							</div>

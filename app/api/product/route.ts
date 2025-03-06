@@ -16,8 +16,10 @@ export async function GET(req: Request) {
 				where: {
 					id: id,
 				},
+				include: { colors: true, Sizes: true },
 			})
 			if (product) {
+				console.log(product)
 				return NextResponse.json(product)
 			} else {
 				return NextResponse.json({ message: 'No product found with the given id' })
