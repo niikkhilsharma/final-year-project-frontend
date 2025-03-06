@@ -13,8 +13,7 @@ import { headers } from 'next/headers'
 import Qr from '@/components/qr'
 
 export default async function Page() {
-	const headerList = await headers()
-	const origin = headerList.get('x-current-origin')
+	const origin = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://rtu.techsolutions.services'
 
 	const products = await prisma.product.findMany()
 	return (
