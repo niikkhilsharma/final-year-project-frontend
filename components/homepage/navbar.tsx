@@ -15,7 +15,7 @@ const Navbar = async () => {
 				<div className="flex h-16 items-center justify-between">
 					<div className="flex items-center gap-6 md:gap-10">
 						<Link href="/" className="flex items-center space-x-2">
-							<span className="text-xl font-bold">ShopNow</span>
+							<span className="text-xl font-bold">Shop.co</span>
 						</Link>
 						<nav className="hidden md:flex gap-6">
 							<Link href="#" className="text-sm font-medium transition-colors hover:text-primary">
@@ -24,13 +24,24 @@ const Navbar = async () => {
 							<Link href="#" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
 								Categories
 							</Link>
+							<Link href="#" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
+								New Arrivals
+							</Link>
+							<Link href="#" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
+								Brands
+							</Link>
 						</nav>
 					</div>
 					<div className="hidden md:flex items-center gap-4">
 						<div className="relative">
-							<Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-							<Input type="search" placeholder="Search products..." className="w-[200px] lg:w-[300px] pl-8" />
+							<Search className="absolute left-2.5 top-3 h-4 w-4 text-foreground" />
+							<Input
+								type="search"
+								placeholder="Search products..."
+								className="w-[200px] bg-[#f0f0f0] rounded-full focus-within:bg-white active:bg-white lg:w-[300px] pl-8"
+							/>
 						</div>
+
 						<Button variant="ghost" size="icon" className="relative">
 							<Heart className="h-5 w-5" />
 							<span className="sr-only">Wishlist</span>
@@ -54,7 +65,9 @@ const Navbar = async () => {
 									</Button>
 								</DropdownMenuTrigger>
 								<DropdownMenuContent>
-									<DropdownMenuItem>Create an account</DropdownMenuItem>
+									<DropdownMenuItem>
+										<Link href={'/seller/register'}>Create an account</Link>
+									</DropdownMenuItem>
 									<DropdownMenuItem>
 										<Link href={'/seller/sign-in'}>Already a seller</Link>
 									</DropdownMenuItem>

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { Loader, QrCode } from 'lucide-react'
@@ -14,8 +14,6 @@ export default function Qr({ link, productName }: { link: string; productName: s
 		const res = await axios.post('/api/qr', { link })
 		setQrImage(res.data.qr)
 	}
-
-	getQr()
 
 	return (
 		<Dialog>

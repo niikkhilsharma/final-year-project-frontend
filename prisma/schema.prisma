@@ -124,7 +124,8 @@ model Product {
   stock       Int
   createdById String
   category    CategoryEnum
-  color       Color[]
+  colors      Color[]
+  Sizes       Size[]
   mainImage   String
   images      String[]
   OrderedItem OrderedItem[]
@@ -209,7 +210,21 @@ model Country {
 model Color {
   id        String   @id @default(cuid())
   name      String
-  codeHex   String
+  codeHex   String   @unique
   Product   Product? @relation(fields: [productId], references: [id])
   productId String?
+}
+
+model Size {
+  id              String       @id @default(cuid())
+  productCategory CategoryEnum
+  sizeCode        String?      @unique
+  sizeNumber      Int?         @unique
+  waistSize       String?      @unique
+  width           String?
+  height          String?
+  Product         Product?     @relation(fields: [productId], references: [id])
+  productId       String?
+
+  @@unique([width, height])
 }
