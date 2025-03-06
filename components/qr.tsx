@@ -7,7 +7,7 @@ import { Loader, QrCode } from 'lucide-react'
 import axios from 'axios'
 import Image from 'next/image'
 
-export default function Qr({ productId, link, productName }: { productId: string; link: string; productName: string }) {
+export default function Qr({ link, productName }: { link: string; productName: string }) {
 	const [qrImage, setQrImage] = useState<string | null>(null)
 
 	const getQr = async () => {
