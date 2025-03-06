@@ -98,12 +98,7 @@ export default async function Page() {
 												<span className="ml-1 text-muted-foreground">({product.reviews})</span>
 											</div> */}
 
-											<Qr
-												key={product.id}
-												productId={product.id}
-												productName={product.name}
-												link={origin + '/product?id=' + product.id}
-											/>
+											<Qr key={product.id} productName={product.name} link={origin + '/product?id=' + product.id} />
 
 											<Button size="sm" variant="secondary">
 												<ShoppingCart className="mr-2 h-4 w-4" />
