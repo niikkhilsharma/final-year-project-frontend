@@ -1,16 +1,22 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { ShoppingCart, Heart, ChevronRight, ArrowRight, QrCode } from 'lucide-react'
+import { ShoppingCart, Heart, ChevronRight, ArrowRight } from 'lucide-react'
 
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import Navbar from '@/components/homepage/navbar'
 import Hero from '@/components/homepage/hero'
 import Footer from '@/components/homepage/footer'
+import prisma from '@/lib/prisma'
+import { headers } from 'next/headers'
+import Qr from '@/components/qr'
 
-export default function Page() {
+export default async function Page() {
+	const headerList = await headers()
+	const origin = headerList.get('x-current-origin')
+
+	const products = await prisma.product.findMany()
 	return (
 		<div className="flex min-h-[100svh] flex-col">
 			<Navbar />
@@ -62,15 +68,15 @@ export default function Page() {
 						<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-8">
 							{products.map(product => (
 								<div key={product.id} className="group relative overflow-hidden rounded-lg border bg-background">
-									<Link href="#" className="relative block overflow-hidden">
+									<Link href={`/product?id=${product.id}`} className="relative block overflow-hidden">
 										<Image
-											src={product.image || '/placeholder.svg'}
+											src={product.mainImage || '/placeholder.svg'}
 											alt={product.name}
 											width={300}
 											height={300}
 											className="aspect-square object-cover transition-transform duration-300 group-hover:scale-105"
 										/>
-										{product.discount && <Badge className="absolute top-2 left-2 bg-red-500">-{product.discount}%</Badge>}
+										{/* {product.discount && <Badge className="absolute top-2 left-2 bg-red-500">-{product.discount}%</Badge>} */}
 										<Button
 											size="icon"
 											variant="secondary"
@@ -83,31 +89,21 @@ export default function Page() {
 										<h3 className="font-medium">{product.name}</h3>
 										<div className="flex items-center gap-2 mt-1">
 											<span className="font-medium">${product.price.toFixed(2)}</span>
-											{product.originalPrice && (
-												<span className="text-sm text-muted-foreground line-through">${product.originalPrice.toFixed(2)}</span>
-											)}
+											{product.price && <span className="text-sm text-muted-foreground line-through">${product.price.toFixed(2)}</span>}
 										</div>
 										<div className="mt-4 flex items-center justify-between">
-											<div className="flex items-center text-sm text-yellow-500">
-												{'★'.repeat(product.rating)}
+											{/* <div className="flex items-center text-sm text-yellow-500">
+												{'★'.repeat(product.rating || 0)}
 												{'☆'.repeat(5 - product.rating)}
 												<span className="ml-1 text-muted-foreground">({product.reviews})</span>
-											</div>
-											<Dialog>
-												<DialogTrigger asChild>
-													<Button size={'icon'} variant={'secondary'}>
-														<QrCode />
-													</Button>
-												</DialogTrigger>
-												<DialogContent>
-													<DialogHeader>
-														<DialogTitle>{product.name}</DialogTitle>
-														<DialogDescription>
-															<Image src={product.image} alt={product.name} width={300} height={300} className="w-full h-full" />
-														</DialogDescription>
-													</DialogHeader>
-												</DialogContent>
-											</Dialog>
+											</div> */}
+
+											<Qr
+												key={product.id}
+												productId={product.id}
+												productName={product.name}
+												link={origin + '/product?id=' + product.id}
+											/>
 
 											<Button size="sm" variant="secondary">
 												<ShoppingCart className="mr-2 h-4 w-4" />
@@ -230,49 +226,6 @@ const categories = [
 	},
 	{
 		name: 'Home',
-		image: '/images/hero-img.png',
-	},
-]
-
-const products = [
-	{
-		id: 1,
-		name: 'Classic White T-Shirt',
-		price: 24.99,
-		originalPrice: 29.99,
-		discount: 15,
-		rating: 4,
-		reviews: 42,
-		image: '/images/hero-img.png',
-	},
-	{
-		id: 2,
-		name: 'Slim Fit Jeans',
-		price: 49.99,
-		originalPrice: null,
-		discount: null,
-		rating: 5,
-		reviews: 18,
-		image: '/images/hero-img.png',
-	},
-	{
-		id: 3,
-		name: 'Leather Sneakers',
-		price: 79.99,
-		originalPrice: 99.99,
-		discount: 20,
-		rating: 4,
-		reviews: 36,
-		image: '/images/hero-img.png',
-	},
-	{
-		id: 4,
-		name: 'Casual Hoodie',
-		price: 39.99,
-		originalPrice: null,
-		discount: null,
-		rating: 3,
-		reviews: 12,
 		image: '/images/hero-img.png',
 	},
 ]
