@@ -6,7 +6,15 @@ import { NextResponse } from 'next/server'
 const { auth } = NextAuth(authConfig)
 
 export default auth(async function middleware(request) {
-	const allowedPaths = ['/', '/customer/sign-in', '/customer/sign-up', '/seller/sign-in', '/seller/register']
+	const allowedPaths = [
+		'/',
+		'/product',
+		'/api/product',
+		'/customer/sign-in',
+		'/customer/sign-up',
+		'/seller/sign-in',
+		'/seller/register',
+	]
 
 	// Add a new header x-current-path which passes the path to downstream components
 	const headers = new Headers(request.headers)
