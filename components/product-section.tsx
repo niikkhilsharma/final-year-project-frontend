@@ -1,6 +1,6 @@
 import React from 'react'
 import MaxWidthWrapper from './max-width-wrapper'
-import ProductBox from '@/components/product'
+import ProductCard from '@/components/product-card'
 import { Button } from '@/components/ui/button'
 import SectionHeading from './section-heading'
 
@@ -23,7 +23,7 @@ const ProductSection: React.FC<{ productsContainer: ProductContainer }> = async 
 				<SectionHeading heading={productsContainer.containerHeading} className="mb-16 mt-20" />
 				<div className="flex gap-4 overflow-x-scroll">
 					{productsContainer.products.map((product, index) => (
-						<ProductBox key={index} {...product} />
+						<ProductCard key={index} {...product} />
 					))}
 				</div>
 				<div className="flex justify-center items-center mt-10">

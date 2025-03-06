@@ -13,7 +13,7 @@ interface ProductProps {
 	stars?: number
 }
 
-const ProductBox: React.FC<ProductProps> = ({ id = '', productUrl, heading, stars, price }) => {
+const ProductCard: React.FC<ProductProps> = ({ id = '', productUrl, heading, stars, price }) => {
 	return (
 		<Link href={`/product?id=${id}`}>
 			<div className="rounded-3xl bg-primary-foreground overflow-hidden max-w-72 min-w-72 aspect-square">
@@ -30,4 +30,4 @@ const ProductBox: React.FC<ProductProps> = ({ id = '', productUrl, heading, star
 	)
 }
 
-export default ProductBox
+export default ProductCard

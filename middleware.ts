@@ -13,6 +13,7 @@ export default auth(async function middleware(request) {
 		'/customer/sign-in',
 		'/customer/sign-up',
 		'/seller/sign-in',
+		'/search',
 		'/seller/register',
 	]
 
