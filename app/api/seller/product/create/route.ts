@@ -1,7 +1,6 @@
 import prisma from '@/lib/prisma'
 import { auth } from '@/auth'
 import type { Color, Size } from '@prisma/client'
-import { NextResponse } from 'next/server'
 
 type sizeType = Size & { checked: boolean }
 
