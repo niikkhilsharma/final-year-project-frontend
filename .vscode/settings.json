@@ -42,10 +42,10 @@
 	},
 	"javascript.updateImportsOnFileMove.enabled": "always",
 	"[typescriptreact]": {
-		"editor.defaultFormatter": "esbenp.prettier-vscode"
+		"editor.defaultFormatter": "vscode.typescript-language-features"
 	},
 	"[typescript]": {
-		"editor.defaultFormatter": "esbenp.prettier-vscode"
+		"editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
 	},
 	"window.commandCenter": false,
 	"[jsonc]": {
@@ -63,8 +63,6 @@
 	"workbench.startupEditor": "none",
 	"diffEditor.ignoreTrimWhitespace": false,
 	"editor.accessibilitySupport": "off",
-	"terminal.integrated.fontFamily": "monospace",
-	"editor.fontFamily": "Menlo, Monaco, 'Courier New', monospace",
 	"html.format.wrapLineLength": 150,
 	"editor.tabSize": 2,
 	"prettier.singleQuote": true,

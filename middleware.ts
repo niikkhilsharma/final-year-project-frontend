@@ -6,7 +6,7 @@ import { NextResponse } from 'next/server'
 const { auth } = NextAuth(authConfig)
 
 export default auth(async function middleware(request) {
-	const allowedPaths = ['/customer/sign-in', '/customer/sign-up', '/seller/sign-in', '/seller/register']
+	const allowedPaths = ['/customer/sign-in', '/customer/sign-up', '/seller/sign-in', '/seller/register','/api/seller/resources/all-categories']
 
 	// Check if the request path is in the allowed list
 	if (allowedPaths.includes(request.nextUrl.pathname)) {
