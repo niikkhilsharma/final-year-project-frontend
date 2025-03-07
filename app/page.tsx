@@ -208,20 +208,36 @@ export default async function Page() {
 // Sample data
 const categories = [
 	{
-		name: 'Clothing',
-		image: '/images/hero-img.png',
+		name: 'Electronics',
+		image: '/images/Electronics.jpeg',
 	},
 	{
-		name: 'Shoes',
-		image: '/images/hero-img.png',
+		name: 'Clothing',
+		image: '/images/Clothing.jpeg',
 	},
 	{
 		name: 'Accessories',
-		image: '/images/hero-img.png',
+		image: '/images/accessories.jpeg',
 	},
 	{
 		name: 'Home',
-		image: '/images/hero-img.png',
+		image: '/images/Home.jpeg',
+	},
+	{
+		name: 'Sports',
+		image: '/images/Sports.jpeg',
+	},
+	{
+		name: 'Toys',
+		image: '/images/Toys.jpeg',
+	},
+	{
+		name: 'Beauty',
+		image: '/images/beauty.jpeg',
+	},
+	{
+		name: 'Books',
+		image: '/images/books.jpeg',
 	},
 ]
 
