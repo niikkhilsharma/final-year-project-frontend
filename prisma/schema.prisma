@@ -33,6 +33,7 @@ model User {
   image         String?
   address       String?
   email         String          @unique
+  gstNumber     String?         @unique
   password      String
   gender        String?
   dob           DateTime?
