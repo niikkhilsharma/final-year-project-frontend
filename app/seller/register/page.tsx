@@ -12,7 +12,6 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { signIn } from 'next-auth/react'
 import { useEffect, useState } from 'react'
 import "react-phone-input-2/lib/style.css";
-import PhoneInput from "react-phone-input-2";
 import { useRouter } from 'next/navigation'
 import {
 	Select,
@@ -27,12 +26,18 @@ import axios from 'axios'
 
 
 const formSchema = z.object({
+	firstName: z.string().min(3, {
+		message: 'First name must be at least 3 characters.',
+	}),
+	lastName: z.string().min(3, {
+		message: 'First name must be at least 3 characters.',
+	}),
 	email: z.string().email().min(3, {
 		message: 'Email must be at least 3 characters long.',
 	}),
 	password: z.string().min(8, { message: 'Password must be atleast 8 characters long' }),
 	mobile: z.number(),
-	number: z.string().min(15, { message: "GST must be 15 digit long" }),
+	gstNumber: z.string().min(15, { message: "GST must be 15 digit long" }),
 })
 
 export default function RegisterPage() {
@@ -54,25 +59,42 @@ export default function RegisterPage() {
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
+			firstName: '',
+			lastName: '',
 			email: '',
 			password: '',
-			number: 0,
+			gstNumber: '0',
 
 		},
 	})
 
 	async function onSubmit(values: z.infer<typeof formSchema>) {
-		const res = await signIn('credentials', {
-			email: values.email,
-			password: values.password,
-			redirectTo: '/',
+		const { firstName, lastName, email, password, gstNumber } = values
+		const data = {
+			firstName,
+			lastName,
+			email,
+			password,
+			gstNumber,
+			isCustomer: false,
+		}
+
+		const responseData = await fetch('/api/auth/register', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify(data),
 		})
 
-		if (res?.error) {
-			setAuthError('Invalid email or password. Please try again.')
+		if (responseData.ok) {
+			await signIn('credentials', {
+				email: data.email,
+				password: data.password,
+				redirectTo: '/',
+			})
 		} else {
-			setAuthError(null)
-			router.push('/')
+			alert('Something went wrong. Please try again.')
 		}
 	}
 
@@ -81,11 +103,37 @@ export default function RegisterPage() {
 			<Card className="w-full max-w-md">
 				<CardHeader className="space-y-1">
 					<CardTitle className="text-2xl font-bold text-center">Register as Seller</CardTitle>
-					<CardDescription className='text-xl font-bold text-center'>Create a New Seller Account</CardDescription>
+					<CardDescription className='text-lg font-bold text-center'>Create a New Seller Account</CardDescription>
 				</CardHeader>
 				<Form {...form}>
 					<form onSubmit={form.handleSubmit(onSubmit)} className="">
 						<CardContent className="space-y-4">
+							<FormField
+								control={form.control}
+								name="firstName"
+								render={({ field }) => (
+									<FormItem className="w-full">
+										<FormLabel>First Name</FormLabel>
+										<FormControl>
+											<Input placeholder="Nikhil" {...field} />
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+							<FormField
+								control={form.control}
+								name="lastName"
+								render={({ field }) => (
+									<FormItem className="w-full">
+										<FormLabel>Last Name</FormLabel>
+										<FormControl>
+											<Input placeholder="Sharma" {...field} />
+										</FormControl>
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
 							<FormField
 								control={form.control}
 								name="email"
@@ -117,10 +165,10 @@ export default function RegisterPage() {
 								What are you looking to sell on Flipkart?
 							</div>
 							<Select>
-								<SelectTrigger className="w-[180px]">
+								<SelectTrigger className="w-full">
 									<SelectValue placeholder="Choose a Catergory" />
 								</SelectTrigger>
-								<SelectContent>
+								<SelectContent className='w-full'>
 									<SelectGroup>
 										<SelectLabel>All Categories</SelectLabel>
 										{categories.map((category: string) => <SelectItem key={category} value={category}>{category}</SelectItem>)}
@@ -129,7 +177,7 @@ export default function RegisterPage() {
 							</Select>
 							<FormField
 								control={form.control}
-								name="number"
+								name="gstNumber"
 								render={({ field }) => (
 									<FormItem className="w-full">
 										<FormLabel>Enter GST</FormLabel>
