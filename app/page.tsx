@@ -12,8 +12,43 @@ import Qr from '@/components/qr'
 
 export default async function Page() {
 	const origin = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://rtu.techsolutions.services'
-
 	const products = await prisma.product.findMany()
+
+	const categories = [
+		{
+			name: 'Electronics',
+			image: '/images/Electronics.jpeg',
+		},
+		{
+			name: 'Clothing',
+			image: '/images/Clothing.jpeg',
+		},
+		{
+			name: 'Accessories',
+			image: '/images/accessories.jpeg',
+		},
+		{
+			name: 'Home',
+			image: '/images/Home.jpeg',
+		},
+		{
+			name: 'Sports',
+			image: '/images/Sports.jpeg',
+		},
+		{
+			name: 'Toys',
+			image: '/images/Toys.jpeg',
+		},
+		{
+			name: 'Beauty',
+			image: '/images/beauty.jpeg',
+		},
+		{
+			name: 'Books',
+			image: '/images/books.jpeg',
+		},
+	]
+
 	return (
 		<div className="flex min-h-[100svh] flex-col">
 			<main className="flex-1">
@@ -33,7 +68,7 @@ export default async function Page() {
 							{categories.map(category => (
 								<Link key={category.name} href="#" className="group relative overflow-hidden rounded-lg">
 									<Image
-										src={category.image || '/placeholder.svg'}
+										src={category.image}
 										alt={category.name}
 										width={300}
 										height={300}
@@ -199,26 +234,6 @@ export default async function Page() {
 		</div>
 	)
 }
-
-// Sample data
-const categories = [
-	{
-		name: 'Clothing',
-		image: '/images/hero-img.png',
-	},
-	{
-		name: 'Shoes',
-		image: '/images/hero-img.png',
-	},
-	{
-		name: 'Accessories',
-		image: '/images/hero-img.png',
-	},
-	{
-		name: 'Home',
-		image: '/images/hero-img.png',
-	},
-]
 
 const testimonials = [
 	{
