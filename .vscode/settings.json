@@ -45,7 +45,7 @@
 		"editor.defaultFormatter": "vscode.typescript-language-features"
 	},
 	"[typescript]": {
-		"editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
+		"editor.defaultFormatter": "esbenp.prettier-vscode"
 	},
 	"window.commandCenter": false,
 	"[jsonc]": {
