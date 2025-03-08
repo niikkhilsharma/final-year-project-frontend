@@ -7,9 +7,14 @@ type WhereClauseType = { category?: CategoryEnum }
 export async function GET(req: Request) {
 	try {
 		const { searchParams } = new URL(req.url)
-		const name = searchParams.get('name')
 		const id = searchParams.get('id')
-		console.log(id)
+		const name = searchParams.get('name')
+		const category = searchParams.get('category')
+
+		if (!id && !name) {
+			const allProducts = await prisma.product.findMany()
+			return NextResponse.json(allProducts)
+		}
 
 		if (id) {
 			const product = await prisma.product.findUnique({
@@ -27,8 +32,6 @@ export async function GET(req: Request) {
 		}
 
 		if (!name) return NextResponse.json({ message: 'No name provided' }, { status: 400 })
-
-		const category = searchParams.get('category')
 
 		const whereClause: WhereClauseType = {}
 
