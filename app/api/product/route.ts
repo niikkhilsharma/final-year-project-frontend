@@ -10,7 +10,6 @@ export async function GET(req: Request) {
 		const id = searchParams.get('id')
 		const name = searchParams.get('name')
 		const category = searchParams.get('category')
-
 		if (!id && !name) {
 			const allProducts = await prisma.product.findMany()
 			return NextResponse.json(allProducts)
@@ -51,7 +50,7 @@ export async function GET(req: Request) {
 		console.log(filteredProducts)
 
 		if (filteredProducts.length === 0) {
-			return NextResponse.json({ message: 'No matching products found' }, { status: 404 })
+			return NextResponse.json( [] )
 		}
 
 		return NextResponse.json({ filteredProducts })

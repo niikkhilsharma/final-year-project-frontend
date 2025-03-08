@@ -42,7 +42,7 @@
 	},
 	"javascript.updateImportsOnFileMove.enabled": "always",
 	"[typescriptreact]": {
-		"editor.defaultFormatter": "vscode.typescript-language-features"
+		"editor.defaultFormatter": "rvest.vs-code-prettier-eslint"
 	},
 	"[typescript]": {
 		"editor.defaultFormatter": "esbenp.prettier-vscode"

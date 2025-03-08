@@ -2,9 +2,10 @@ import { auth } from '@/auth'
 import Link from 'next/link'
 import { ShoppingCart, Search, Heart, Menu, ArrowRight } from 'lucide-react'
 import { Button, buttonVariants } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
+
 import { Badge } from '@/components/ui/badge'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
+import Productsearchbar from './product-search-bar'
 
 const Navbar = async () => {
 	const session = await auth()
@@ -33,14 +34,7 @@ const Navbar = async () => {
 						</nav>
 					</div>
 					<div className="hidden md:flex items-center gap-4">
-						<div className="relative">
-							<Search className="absolute left-2.5 top-3 h-4 w-4 text-foreground" />
-							<Input
-								type="search"
-								placeholder="Search products..."
-								className="w-[200px] bg-[#f0f0f0] rounded-full focus-within:bg-white active:bg-white lg:w-[300px] pl-8"
-							/>
-						</div>
+						<Productsearchbar />
 						{session?.user?.role === 'Seller' &&
 							<Link href={'/seller/create-product'} className={buttonVariants({ variant: 'default' })}>Create Product</Link>}
 						<Button variant="ghost" size="icon" className="relative">
