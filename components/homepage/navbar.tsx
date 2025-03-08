@@ -41,7 +41,8 @@ const Navbar = async () => {
 								className="w-[200px] bg-[#f0f0f0] rounded-full focus-within:bg-white active:bg-white lg:w-[300px] pl-8"
 							/>
 						</div>
-
+						{session?.user?.role === 'Seller' &&
+							<Link href={'/seller/create-product'} className={buttonVariants({ variant: 'default' })}>Create Product</Link>}
 						<Button variant="ghost" size="icon" className="relative">
 							<Heart className="h-5 w-5" />
 							<span className="sr-only">Wishlist</span>
@@ -81,7 +82,7 @@ const Navbar = async () => {
 					</Button>
 				</div>
 			</div>
-		</div>
+		</div >
 	)
 }
 

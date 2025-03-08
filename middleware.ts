@@ -16,6 +16,7 @@ export default auth(async function middleware(request) {
 		'/search',
 		'/seller/register',
 		'/api/qr',
+		'/api/seller/resources/all-categories',
 	]
 
 	// Add a new header x-current-path which passes the path to downstream components
