@@ -1,5 +1,4 @@
 'use client'
-
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
@@ -11,8 +10,7 @@ import { Input } from '@/components/ui/input'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { signIn } from 'next-auth/react'
 import { useEffect, useState } from 'react'
-import "react-phone-input-2/lib/style.css";
-import { useRouter } from 'next/navigation'
+import 'react-phone-input-2/lib/style.css'
 import {
 	Select,
 	SelectContent,
@@ -21,9 +19,8 @@ import {
 	SelectLabel,
 	SelectTrigger,
 	SelectValue,
-} from "@/components/ui/select"
+} from '@/components/ui/select'
 import axios from 'axios'
-
 
 const formSchema = z.object({
 	firstName: z.string().min(3, {
@@ -36,13 +33,14 @@ const formSchema = z.object({
 		message: 'Email must be at least 3 characters long.',
 	}),
 	password: z.string().min(8, { message: 'Password must be atleast 8 characters long' }),
-	gstNumber: z.string().min(15, { message: "GST must be 15 digit long" }),
+	gstNumber: z.string().min(15, { message: 'GST must be 15 digit long' }),
 })
 
 export default function RegisterPage() {
 	const params = useSearchParams()
 	const error = params.get('error')
-	const [authError, setAuthError] = useState<string | null>(null)
+	// const [authError, setAuthError] = useState<string | null>(null)
+	const authError = useState(null)
 	const [categories, setCategories] = useState([])
 
 	useEffect(() => {
@@ -54,7 +52,6 @@ export default function RegisterPage() {
 		getAllCategories()
 	}, [])
 
-
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
@@ -63,7 +60,6 @@ export default function RegisterPage() {
 			email: '',
 			password: '',
 			gstNumber: '0',
-
 		},
 	})
 
@@ -102,7 +98,7 @@ export default function RegisterPage() {
 			<Card className="w-full max-w-md">
 				<CardHeader className="space-y-1">
 					<CardTitle className="text-2xl font-bold text-center">Register as Seller</CardTitle>
-					<CardDescription className='text-lg font-bold text-center'>Create a New Seller Account</CardDescription>
+					<CardDescription className="text-lg font-bold text-center">Create a New Seller Account</CardDescription>
 				</CardHeader>
 				<Form {...form}>
 					<form onSubmit={form.handleSubmit(onSubmit)}>
@@ -160,17 +156,19 @@ export default function RegisterPage() {
 									</FormItem>
 								)}
 							/>
-							<div className='flex justify-start items-center'>
-								What are you looking to sell?
-							</div>
+							<div className="flex justify-start items-center">What are you looking to sell?</div>
 							<Select>
 								<SelectTrigger className="w-full">
 									<SelectValue placeholder="Choose a Catergory" />
 								</SelectTrigger>
-								<SelectContent className='w-full'>
+								<SelectContent className="w-full">
 									<SelectGroup>
 										<SelectLabel>All Categories</SelectLabel>
-										{categories.map((category: string) => <SelectItem key={category} value={category}>{category}</SelectItem>)}
+										{categories.map((category: string) => (
+											<SelectItem key={category} value={category}>
+												{category}
+											</SelectItem>
+										))}
 									</SelectGroup>
 								</SelectContent>
 							</Select>
@@ -192,7 +190,9 @@ export default function RegisterPage() {
 							{(authError || error === 'CredentialsSignin') && (
 								<p className="text-red-500 text-start text-sm">Invalid email or password. Please try again.</p>
 							)}
-							<Button className="w-full" onClick={form.handleSubmit(onSubmit)}>Register and Continue</Button>
+							<Button className="w-full" onClick={form.handleSubmit(onSubmit)}>
+								Register and Continue
+							</Button>
 							<div className="text-sm text-center text-gray-600">
 								Already have an account?{' '}
 								<Link href="/seller/sign-in" className="text-primary hover:underline">

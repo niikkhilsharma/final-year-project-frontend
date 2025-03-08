@@ -2,7 +2,13 @@ import { NextResponse } from 'next/server'
 import prisma from '@/lib/prisma'
 import { CategoryEnum } from '@prisma/client'
 
-type WhereClauseType = { category?: CategoryEnum }
+type WhereClauseType = {
+	category?: CategoryEnum
+	name?: {
+		contains: string
+		mode: 'insensitive'
+	}
+}
 
 export async function GET(req: Request) {
 	try {
@@ -11,52 +17,49 @@ export async function GET(req: Request) {
 		const name = searchParams.get('name')
 		const category = searchParams.get('category')
 
-		if (!id && !name) {
-			const allProducts = await prisma.product.findMany()
-			return NextResponse.json(allProducts)
-		}
-
+		// Handle case for fetching by ID
 		if (id) {
 			const product = await prisma.product.findUnique({
 				where: {
-					id: id,
+					id,
 				},
 				include: { colors: true, Sizes: true },
 			})
+
 			if (product) {
-				console.log(product)
 				return NextResponse.json(product)
 			} else {
-				return NextResponse.json({ message: 'No product found with the given id' })
+				return NextResponse.json({ message: 'No product found with the given id' }, { status: 404 })
 			}
 		}
 
-		if (!name) return NextResponse.json({ message: 'No name provided' }, { status: 400 })
-
+		// Building the where clause for filtering
 		const whereClause: WhereClauseType = {}
 
-		if (category) whereClause.category = category as CategoryEnum
-		console.log(whereClause)
-
-		let products
-
-		if (Object.keys(whereClause).length !== 0) {
-			products = await prisma.product.findMany({ where: whereClause })
-			console.log(products)
-		} else {
-			products = await prisma.product.findMany()
+		if (category && Object.values(CategoryEnum).includes(category as CategoryEnum)) {
+			whereClause.category = category as CategoryEnum
 		}
 
-		const filteredProducts = products.filter(product => product.name.toLowerCase().includes(name?.toLowerCase()))
-		console.log(filteredProducts)
+		if (name) {
+			whereClause.name = {
+				contains: name,
+				mode: 'insensitive', // Case insensitive search
+			}
+		}
 
-		if (filteredProducts.length === 0) {
+		// Fetch products with filters if any, or all products
+		const products = await prisma.product.findMany({
+			where: whereClause,
+			include: { colors: true, Sizes: true },
+		})
+
+		if (products.length === 0) {
 			return NextResponse.json({ message: 'No matching products found' }, { status: 404 })
 		}
 
-		return NextResponse.json({ filteredProducts })
+		return NextResponse.json(products)
 	} catch (error) {
 		console.error('Error fetching products:', error)
-		return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
+		return NextResponse.json({ message: 'Internal Server Error', error: String(error) }, { status: 500 })
 	}
 }

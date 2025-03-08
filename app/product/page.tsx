@@ -1,6 +1,6 @@
 'use client'
 import Image from 'next/image'
-import { Star, ChevronDown } from 'lucide-react'
+import { Star, Minus, Plus } from 'lucide-react'
 import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import axios from 'axios'
@@ -134,8 +134,14 @@ function Product() {
 								{/* Thumbnails */}
 								<div className="flex flex-col gap-4">
 									{productData.images.map((img, indx) => (
-										<div key={indx} className="border rounded-lg p-2 w-20 h-20 flex items-center justify-center">
-											<Image src={img} alt="T-shirt thumbnail" width={60} height={60} className="object-cover" />
+										<div key={indx} className="border rounded-lg w-20 h-20 flex items-center justify-center">
+											<Image
+												src={img}
+												alt="T-shirt thumbnail"
+												width={60}
+												height={60}
+												className="object-contain w-20 h-20 aspect-square rounded-lg"
+											/>
 										</div>
 									))}
 								</div>
@@ -178,7 +184,7 @@ function Product() {
 										{productData.colors.map((color, indx) => (
 											<button
 												key={indx}
-												className={cn('w-8 h-8 rounded-full ring-2 ring-offset-1 ring-black hover:opacity-80')}
+												className={cn('w-8 h-8 rounded-full hover:opacity-80')}
 												style={{ backgroundColor: color.codeHex }}></button>
 										))}
 									</div>
@@ -189,7 +195,7 @@ function Product() {
 									<h3 className="font-medium mb-2">Choose Size</h3>
 									<div className="flex gap-2">
 										{productData.Sizes.map((size, indx) => (
-											<button key={indx} className={cn('w-8 h-8 rounded-full ring-2 ring-offset-1 ring-black hover:opacity-80')}>
+											<button key={indx} className={cn('w-8 h-8 rounded-full ring-2 ring-black hover:opacity-80')}>
 												{size.sizeCode || size.waistSize || size.sizeNumber || `W: ${size.width} H: ${size.height}`}
 											</button>
 										))}
@@ -198,7 +204,7 @@ function Product() {
 
 								{/* Add to Cart */}
 								<div className="flex gap-4 mb-8">
-									{/* <div className="flex items-center border rounded-md">
+									<div className="flex items-center border rounded-md">
 										<button className="px-3 py-2">
 											<Minus className="w-5 h-5" />
 										</button>
@@ -206,7 +212,7 @@ function Product() {
 										<button className="px-3 py-2">
 											<Plus className="w-5 h-5" />
 										</button>
-									</div> */}
+									</div>
 									<button className="bg-black text-white rounded-md px-6 py-3 flex-1 font-medium">Add to Cart</button>
 								</div>
 							</div>
@@ -408,8 +414,9 @@ function Product() {
 							<div className="flex gap-4 overflow-x-scroll">
 								{sellingContainer.products.map((product, index) => (
 									<ProductCard
+										id={index.toString()}
 										key={index}
-										productUrl={product.productUrl}
+										mainImageUrl={product.productUrl}
 										heading={product.heading}
 										price={product.price}
 										stars={product.stars}
@@ -420,8 +427,9 @@ function Product() {
 						<div className="flex gap-4 overflow-x-scroll mt-10">
 							{productsContainer.products.map((product, index) => (
 								<ProductCard
+									id={index.toString()}
 									key={index}
-									productUrl={product.productUrl}
+									mainImageUrl={product.productUrl}
 									heading={product.heading}
 									price={product.price}
 									stars={product.stars}
