@@ -213,7 +213,7 @@ function Product() {
 						</div>
 
 						{/* Tabs */}
-						<div className="mt-16 border-b">
+						{/* <div className="mt-16 border-b">
 							<div className="flex justify-between">
 								<div className="flex">
 									<button className="px-6 py-3 text-gray-500">Product Details</button>
@@ -221,10 +221,10 @@ function Product() {
 									<button className="px-6 py-3 text-gray-500">FAQs</button>
 								</div>
 							</div>
-						</div>
+						</div> */}
 
 						{/* Reviews */}
-						<div className="mt-8">
+						{/* <div className="mt-8">
 							<div className="flex justify-between items-center mb-6">
 								<h2 className="text-xl font-bold">
 									All Reviews <span className="text-gray-500 text-sm font-normal">(453)</span>
@@ -245,10 +245,8 @@ function Product() {
 								</div>
 							</div>
 
-							{/* Review Grid */}
 
 							<div className="grid md:grid-cols-2 gap-6">
-								{/* Review 1 */}
 								<div className="border rounded-lg p-4">
 									<div className="flex justify-between mb-2">
 										<div>
@@ -273,7 +271,6 @@ function Product() {
 									<p className="text-xs text-gray-500 mt-4">Posted on August 14, 2023</p>
 								</div>
 
-								{/* Review 2 */}
 								<div className="border rounded-lg p-4">
 									<div className="flex justify-between mb-2">
 										<div>
@@ -299,7 +296,6 @@ function Product() {
 									<p className="text-xs text-gray-500 mt-4">Posted on August 15, 2023</p>
 								</div>
 
-								{/* Review 3 */}
 								<div className="border rounded-lg p-4">
 									<div className="flex justify-between mb-2">
 										<div>
@@ -325,7 +321,6 @@ function Product() {
 									<p className="text-xs text-gray-500 mt-4">Posted on August 16, 2023</p>
 								</div>
 
-								{/* Review 4 */}
 								<div className="border rounded-lg p-4">
 									<div className="flex justify-between mb-2">
 										<div>
@@ -351,7 +346,6 @@ function Product() {
 									<p className="text-xs text-gray-500 mt-4">Posted on August 17, 2023</p>
 								</div>
 
-								{/* Review 5 */}
 								<div className="border rounded-lg p-4">
 									<div className="flex justify-between mb-2">
 										<div>
@@ -377,7 +371,6 @@ function Product() {
 									<p className="text-xs text-gray-500 mt-4">Posted on August 18, 2023</p>
 								</div>
 
-								{/* Review 6 */}
 								<div className="border rounded-lg p-4">
 									<div className="flex justify-between mb-2">
 										<div>
@@ -407,7 +400,7 @@ function Product() {
 							<div className="mt-8 text-center">
 								<button className="border rounded-md px-6 py-3 text-sm font-medium">Load More Reviews</button>
 							</div>
-						</div>
+						</div> */}
 
 						{/* You Might Also Like */}
 						<div className="mt-16">

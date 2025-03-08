@@ -66,7 +66,7 @@ export default function SignInPage() {
 									<FormItem className="w-full">
 										<FormLabel>Email</FormLabel>
 										<FormControl>
-											<Input placeholder="nikhil@gmail.com" {...field} />
+											<Input placeholder="example@gmail.com" {...field} />
 										</FormControl>
 										<FormMessage />
 									</FormItem>
