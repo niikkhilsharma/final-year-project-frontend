@@ -21,7 +21,7 @@ export default async function Page() {
 		},
 		{
 			name: 'Clothing',
-			image: '/images/Clothing.jpeg',
+			image: '/images/clothing.jpeg',
 		},
 		{
 			name: 'Accessories',
@@ -29,15 +29,15 @@ export default async function Page() {
 		},
 		{
 			name: 'Home',
-			image: '/images/Home.jpeg',
+			image: '/images/home.jpeg',
 		},
 		{
 			name: 'Sports',
-			image: '/images/Sports.jpeg',
+			image: '/images/sports.jpeg',
 		},
 		{
 			name: 'Toys',
-			image: '/images/Toys.jpeg',
+			image: '/images/toys.jpeg',
 		},
 		{
 			name: 'Beauty',
