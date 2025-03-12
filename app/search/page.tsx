@@ -14,7 +14,7 @@ type productType = Product & { colors: Color[]; Sizes: Size[] }
 
 export default function SearchPage() {
 	return (
-		<Suspense>
+		<Suspense fallback={<div>Loading...</div>}>
 			<Search />
 		</Suspense>
 	)
@@ -81,7 +81,7 @@ function Search() {
 
 	useEffect(() => {
 		getData()
-	}, [])
+	}, [name, category])
 
 	const toggleColorSelection = (color: string) => {
 		setSelectedColors(prev => (prev.includes(color) ? prev.filter(c => c !== color) : [...prev, color]))

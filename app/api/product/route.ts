@@ -17,7 +17,11 @@ export async function GET(req: Request) {
 		const name = searchParams.get('name')
 		const category = searchParams.get('category')
 
-		// Handle case for fetching by ID
+		if (!id && !name) {
+			const allProducts = await prisma.product.findMany({ include: { colors: true, Sizes: true } })
+			return NextResponse.json(allProducts)
+		}
+
 		if (id) {
 			const product = await prisma.product.findUnique({
 				where: {
