@@ -238,18 +238,18 @@ export default async function Page() {
 const testimonials = [
 	{
 		name: 'Sarah Johnson',
-		avatar: '/placeholder.svg?height=50&width=50',
+		avatar: '/images/hero-img.png',
 		content:
 			'I love the quality of the clothes! Fast shipping and excellent customer service. Will definitely shop here again.',
 	},
 	{
 		name: 'Michael Brown',
-		avatar: '/placeholder.svg?height=50&width=50',
+		avatar: '/images/hero-img.png',
 		content: 'The return process was so easy and the customer service team was very helpful. Great experience overall!',
 	},
 	{
 		name: 'Emily Davis',
-		avatar: '/placeholder.svg?height=50&width=50',
+		avatar: '/images/hero-img.png',
 		content: "Found some unique pieces that I couldn't find anywhere else. The quality is amazing and worth every penny.",
 	},
 ]

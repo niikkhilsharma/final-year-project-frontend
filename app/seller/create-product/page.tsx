@@ -12,7 +12,6 @@ import ProductImageUpload from '@/components/product-image-upload'
 import { useState, useCallback } from 'react'
 import { Textarea } from '@/components/ui/textarea'
 import { useRouter } from 'next/navigation'
-import '@rc-component/color-picker/assets/index.css'
 import MaxWidthWrapper from '@/components/max-width-wrapper'
 
 import {
