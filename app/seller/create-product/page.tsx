@@ -93,7 +93,7 @@ const CreateProductPage = () => {
 		}
 		console.log(formData)
 
-		const response = await axios.post('/api/seller/product/create', formData)
+		await axios.post('/api/seller/product/create', formData)
 		setLoader(false)
 		router.push('/')
 	}
