@@ -23,6 +23,7 @@ import {
 	DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 import { Size } from '@prisma/client'
+import { Loader2 } from 'lucide-react'
 
 const formSchema = z.object({
 	title: z.string().min(2).max(50),
@@ -44,6 +45,7 @@ const CreateProductPage = () => {
 	const [uploadedImages, setUploadedImages] = useState<string[]>([])
 	const [colors, setColors] = useState<{ name: string; codeHex: string; checked: boolean }[]>([])
 	const [sizes, setSizes] = useState<sizeType[]>([])
+	const [loader, setLoader] = useState(false)
 
 	useEffect(() => {
 		async function getAllColors() {
@@ -81,6 +83,7 @@ const CreateProductPage = () => {
 
 	async function onSubmit(values: z.infer<typeof formSchema>) {
 		// Include uploaded images with the form data
+		setLoader(true)
 		const formData = {
 			...values,
 			colors: colors.filter(color => color.checked),
@@ -91,7 +94,7 @@ const CreateProductPage = () => {
 		console.log(formData)
 
 		const response = await axios.post('/api/seller/product/create', formData)
-		console.log(response.data)
+		setLoader(false)
 		router.push('/')
 	}
 
@@ -260,7 +263,10 @@ const CreateProductPage = () => {
 						)}
 					/>
 					<ProductImageUpload onUploadComplete={handleUploadComplete} />
-					<Button type="submit">Submit</Button>
+					<Button type="submit" disabled={loader}>
+						{loader && <Loader2 className="mr-2 animate-spin" />}
+						Submit
+					</Button>
 				</form>
 			</Form>
 		</MaxWidthWrapper>
