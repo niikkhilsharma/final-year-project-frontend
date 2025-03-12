@@ -5,6 +5,7 @@ import './globals.css'
 import Providers from './providers'
 import Navbar from '@/components/homepage/navbar'
 import Header from '@/components/homepage/header'
+import { Analytics } from '@vercel/analytics/react'
 
 const geistSans = Geist({
 	variable: '--font-geist-sans',
@@ -32,6 +33,7 @@ export default function RootLayout({
 				<Header />
 				<Navbar />
 				<Providers>{children}</Providers>
+				<Analytics />
 			</body>
 		</html>
 	)
