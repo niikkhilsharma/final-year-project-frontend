@@ -1,12 +1,10 @@
 'use client'
-
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import axios from 'axios'
 import Image from 'next/image'
 import type { Product } from '@prisma/client'
 import { Input } from '@/components/ui/input'
 import { Search } from 'lucide-react'
-import Link from 'next/link'
 import { cn } from '@/lib/utils'
 import Qr from '../qr'
 import { useRouter } from 'next/navigation'
@@ -54,8 +52,11 @@ const Productsearchbar = () => {
 			<div className={cn('hidden w-full bg-background rounded-sm absolute top-[46px] border', query.length > 0 && 'block')}>
 				<ul>
 					{products.map((p, indx) => (
-						<Link
-							href={'/product?id=' + p.id}
+						<div
+							onClick={() => {
+								router.push('/product?id=' + p.id)
+								setQuery('')
+							}}
 							key={indx}
 							className="text-black text-center h-14 border-b flex gap-4 items-center px-4 py-1 hover:cursor-pointer bg-background hover:bg-foreground/5">
 							<Image src={p.mainImage} alt="book" width={50} height={50} className="w-11 h-11 aspect-square" />
@@ -66,7 +67,7 @@ const Productsearchbar = () => {
 							<div className="ml-auto">
 								<Qr link={origin + '/product?id=' + p.id} productName={p.name} />
 							</div>
-						</Link>
+						</div>
 					))}
 				</ul>
 			</div>
