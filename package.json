@@ -51,6 +51,7 @@
 		"@tanstack/eslint-plugin-query": "^5.66.1",
 		"@types/bun": "latest",
 		"@types/node": "^20",
+		"@types/qrcode": "^1.5.5",
 		"@types/react": "^19",
 		"@types/react-dom": "^19",
 		"eslint": "^9",
