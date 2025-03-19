@@ -45,11 +45,11 @@ const Navbar = async () => {
 							<span className="sr-only">Wishlist</span>
 							<Badge className="absolute -top-1 -right-1 h-5 w-5 p-0 flex items-center justify-center">0</Badge>
 						</Button>
-						<Button variant="ghost" size="icon" className="relative">
+						<Link href={'/cart'} className={buttonVariants({ variant: 'ghost' })}>
 							<ShoppingCart className="h-5 w-5" />
 							<span className="sr-only">Cart</span>
 							<Badge className="absolute -top-1 -right-1 h-5 w-5 p-0 flex items-center justify-center">0</Badge>
-						</Button>
+						</Link>
 						{!session && (
 							<Link href={'/customer/sign-in'} className={buttonVariants({ variant: 'default' })}>
 								Sign In

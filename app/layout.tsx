@@ -6,6 +6,7 @@ import Providers from './providers'
 import Navbar from '@/components/homepage/navbar'
 import Header from '@/components/homepage/header'
 import { Analytics } from '@vercel/analytics/react'
+import { Toaster } from '@/components/ui/sonner'
 
 const geistSans = Geist({
 	variable: '--font-geist-sans',
@@ -33,6 +34,7 @@ export default function RootLayout({
 				<Header />
 				<Navbar />
 				<Providers>{children}</Providers>
+				<Toaster />
 				<Analytics />
 			</body>
 		</html>

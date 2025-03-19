@@ -7,6 +7,9 @@ import axios from 'axios'
 import ProductCard from '@/components/product-card'
 import type { Product, Color, Size } from '@prisma/client'
 import { cn } from '@/lib/utils'
+import { Button } from '@/components/ui/button'
+import { toast } from 'sonner'
+import { useRouter } from 'next/navigation'
 
 type product = Product & {
 	colors: Color[]
@@ -108,6 +111,11 @@ export default function ProductPage() {
 function Product() {
 	const params = useSearchParams()
 	const id = params.get('id')
+	const router = useRouter()
+
+	const [selectedColor, setSelectedColor] = useState<string>('')
+	// const [selectedSize, setSelectedSize] = useState<string | number>('')
+	const [selectedQuantity, setSelectedQuantity] = useState<number>(1)
 
 	const [productData, setProductData] = useState<product | null>(null)
 
@@ -121,6 +129,38 @@ function Product() {
 
 		getProducts()
 	}, [id])
+
+	function handleAddToCart() {
+		if (!selectedColor) return toast('Please select a color')
+
+		const cartObject = {
+			name: productData?.name,
+			productId: productData?.id,
+			color: selectedColor,
+			stock: selectedQuantity,
+			mainImage: productData?.mainImage,
+			price: productData?.price,
+		}
+
+		const cart = JSON.parse(localStorage.getItem('cart') || '[]')
+
+		// Remove existing product with the same ID
+		// @ts-expect-error //ignore
+		const updatedCart = cart.filter(item => item.productId !== productData?.id)
+
+		// Add the new product
+		updatedCart.push(cartObject)
+
+		localStorage.setItem('cart', JSON.stringify(updatedCart))
+
+		toast('Item has been added to cart', {
+			description: 'Sunday, December 03, 2023 at 9:00 AM',
+			action: {
+				label: 'Go to Cart',
+				onClick: () => router.push('/cart'),
+			},
+		})
+	}
 
 	return (
 		<>
@@ -178,235 +218,68 @@ function Product() {
 								<p className="text-gray-600 mb-6">{productData?.description}</p>
 
 								{/* Color Selection */}
-								<div className="mb-6">
-									<h3 className="font-medium mb-2">Select Colors</h3>
-									<div className="flex gap-2">
-										{productData.colors.map((color, indx) => (
-											<button
-												key={indx}
-												className={cn('w-8 h-8 rounded-full hover:opacity-80')}
-												style={{ backgroundColor: color.codeHex }}></button>
-										))}
+								{productData.colors.length > 0 && (
+									<div className="mb-6">
+										<h3 className="font-medium mb-2">Select Colors</h3>
+										<div className="flex gap-2">
+											{productData.colors.map((color, indx) => (
+												<Button
+													onClick={() => setSelectedColor(color.codeHex)}
+													key={indx}
+													className={cn('w-8 h-8 rounded-full hover:opacity-80', selectedColor === color.codeHex && 'ring-2 ring-black')}
+													style={{ backgroundColor: color.codeHex }}
+												/>
+											))}
+										</div>
 									</div>
-								</div>
+								)}
 
 								{/* Size Selection */}
-								<div className="mb-6">
-									<h3 className="font-medium mb-2">Choose Size</h3>
-									<div className="flex gap-2">
-										{productData.Sizes.map((size, indx) => (
-											<button key={indx} className={cn('w-8 h-8 rounded-full ring-2 ring-black hover:opacity-80')}>
-												{size.sizeCode || size.waistSize || size.sizeNumber || `W: ${size.width} H: ${size.height}`}
-											</button>
-										))}
+								{productData.Sizes.length > 0 && (
+									<div className="mb-6">
+										<h3 className="font-medium mb-2">Choose Size</h3>
+										<div className="flex gap-2">
+											{productData.Sizes.map((size, indx) => (
+												<button
+													key={indx}
+													// onClick={() => setSelectedSize(size.sizeCode || size.waistSize || size.sizeNumber)}
+													className={cn('w-8 h-8 rounded-full ring-2 ring-black hover:opacity-80')}>
+													{size.sizeCode || size.waistSize || size.sizeNumber || `W: ${size.width} H: ${size.height}`}
+												</button>
+											))}
+										</div>
 									</div>
-								</div>
+								)}
 
 								{/* Add to Cart */}
 								<div className="flex gap-4 mb-8">
 									<div className="flex items-center border rounded-md">
 										<button className="px-3 py-2">
-											<Minus className="w-5 h-5" />
+											<Minus
+												className="w-5 h-5"
+												onClick={() => {
+													if (selectedQuantity <= 1) return
+													setSelectedQuantity(selectedQuantity - 1)
+												}}
+											/>
 										</button>
-										<span className="px-4 py-2">1</span>
+										<span className="px-4 py-2">{selectedQuantity}</span>
 										<button className="px-3 py-2">
-											<Plus className="w-5 h-5" />
+											<Plus
+												className="w-5 h-5"
+												onClick={() => {
+													if (productData.stock <= selectedQuantity) return
+													setSelectedQuantity(selectedQuantity + 1)
+												}}
+											/>
 										</button>
 									</div>
-									<button className="bg-black text-white rounded-md px-6 py-3 flex-1 font-medium">Add to Cart</button>
+									<Button className="w-full" onClick={handleAddToCart}>
+										Add to Cart
+									</Button>
 								</div>
 							</div>
 						</div>
-
-						{/* Tabs */}
-						{/* <div className="mt-16 border-b">
-							<div className="flex justify-between">
-								<div className="flex">
-									<button className="px-6 py-3 text-gray-500">Product Details</button>
-									<button className="px-6 py-3 border-b-2 border-black font-medium">Rating & Reviews</button>
-									<button className="px-6 py-3 text-gray-500">FAQs</button>
-								</div>
-							</div>
-						</div> */}
-
-						{/* Reviews */}
-						{/* <div className="mt-8">
-							<div className="flex justify-between items-center mb-6">
-								<h2 className="text-xl font-bold">
-									All Reviews <span className="text-gray-500 text-sm font-normal">(453)</span>
-								</h2>
-								<div className="flex gap-4">
-									<button className="p-2 border rounded-md">
-										<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-											<path d="M5 10H15" stroke="black" strokeWidth="1.5" strokeLinecap="round" />
-											<path d="M2.5 5H17.5" stroke="black" strokeWidth="1.5" strokeLinecap="round" />
-											<path d="M7.5 15H12.5" stroke="black" strokeWidth="1.5" strokeLinecap="round" />
-										</svg>
-									</button>
-									<div className="flex items-center gap-2 border rounded-md px-3 py-2">
-										<span className="text-sm">Latest</span>
-										<ChevronDown className="w-4 h-4" />
-									</div>
-									<button className="bg-black text-white rounded-md px-4 py-2 text-sm">Write a Review</button>
-								</div>
-							</div>
-
-
-							<div className="grid md:grid-cols-2 gap-6">
-								<div className="border rounded-lg p-4">
-									<div className="flex justify-between mb-2">
-										<div>
-											<div className="flex mb-1">
-												{[1, 2, 3, 4, 5].map(i => (
-													<Star key={i} className="w-4 h-4 fill-[#ffc633] text-[#ffc633]" />
-												))}
-											</div>
-											<div className="flex items-center gap-2">
-												<span className="font-medium">Samantha D.</span>
-												<span className="bg-green-100 rounded-full w-4 h-4 flex items-center justify-center">
-													<div className="bg-green-500 rounded-full w-2 h-2"></div>
-												</span>
-											</div>
-										</div>
-										<button className="text-gray-400">•••</button>
-									</div>
-									<p className="text-sm text-gray-600 mt-2">
-										I absolutely love this t-shirt! The design is unique and the fabric feels so comfortable. As a fellow designer, I
-										appreciate the attention to detail, it&apos;s become my favorite go-to shirt.
-									</p>
-									<p className="text-xs text-gray-500 mt-4">Posted on August 14, 2023</p>
-								</div>
-
-								<div className="border rounded-lg p-4">
-									<div className="flex justify-between mb-2">
-										<div>
-											<div className="flex mb-1">
-												{[1, 2, 3, 4].map(i => (
-													<Star key={i} className="w-4 h-4 fill-[#ffc633] text-[#ffc633]" />
-												))}
-												<Star className="w-4 h-4 text-gray-300" />
-											</div>
-											<div className="flex items-center gap-2">
-												<span className="font-medium">Alex M.</span>
-												<span className="bg-green-100 rounded-full w-4 h-4 flex items-center justify-center">
-													<div className="bg-green-500 rounded-full w-2 h-2"></div>
-												</span>
-											</div>
-										</div>
-										<button className="text-gray-400">•••</button>
-									</div>
-									<p className="text-sm text-gray-600 mt-2">
-										The t-shirt exceeded my expectations! The colors are vibrant and the print quality is top-notch. Being a UI/UX
-										designer myself, I&apos;m quite picky about aesthetics, and this t-shirt definitely gets a thumbs up from me.
-									</p>
-									<p className="text-xs text-gray-500 mt-4">Posted on August 15, 2023</p>
-								</div>
-
-								<div className="border rounded-lg p-4">
-									<div className="flex justify-between mb-2">
-										<div>
-											<div className="flex mb-1">
-												{[1, 2, 3, 4].map(i => (
-													<Star key={i} className="w-4 h-4 fill-[#ffc633] text-[#ffc633]" />
-												))}
-												<Star className="w-4 h-4 text-gray-300" />
-											</div>
-											<div className="flex items-center gap-2">
-												<span className="font-medium">Ethan R.</span>
-												<span className="bg-green-100 rounded-full w-4 h-4 flex items-center justify-center">
-													<div className="bg-green-500 rounded-full w-2 h-2"></div>
-												</span>
-											</div>
-										</div>
-										<button className="text-gray-400">•••</button>
-									</div>
-									<p className="text-sm text-gray-600 mt-2">
-										This t-shirt is a must-have for anyone who appreciates good design. The minimalistic yet stylish pattern caught my
-										eye, and the fit is perfect. I can see the designer&apos;s touch in every aspect of this shirt.
-									</p>
-									<p className="text-xs text-gray-500 mt-4">Posted on August 16, 2023</p>
-								</div>
-
-								<div className="border rounded-lg p-4">
-									<div className="flex justify-between mb-2">
-										<div>
-											<div className="flex mb-1">
-												{[1, 2, 3, 4, 5].map(i => (
-													<Star key={i} className="w-4 h-4 fill-[#ffc633] text-[#ffc633]" />
-												))}
-											</div>
-											<div className="flex items-center gap-2">
-												<span className="font-medium">Olivia P.</span>
-												<span className="bg-green-100 rounded-full w-4 h-4 flex items-center justify-center">
-													<div className="bg-green-500 rounded-full w-2 h-2"></div>
-												</span>
-											</div>
-										</div>
-										<button className="text-gray-400">•••</button>
-									</div>
-									<p className="text-sm text-gray-600 mt-2">
-										As a UI/UX enthusiast, I value simplicity and functionality. This t-shirt not only represents those principles but
-										also feels great to wear. It&apos;s evident that the designer poured their creativity into making this t-shirt
-										stand out.
-									</p>
-									<p className="text-xs text-gray-500 mt-4">Posted on August 17, 2023</p>
-								</div>
-
-								<div className="border rounded-lg p-4">
-									<div className="flex justify-between mb-2">
-										<div>
-											<div className="flex mb-1">
-												{[1, 2, 3, 4].map(i => (
-													<Star key={i} className="w-4 h-4 fill-[#ffc633] text-[#ffc633]" />
-												))}
-												<Star className="w-4 h-4 text-gray-300" />
-											</div>
-											<div className="flex items-center gap-2">
-												<span className="font-medium">Liam K.</span>
-												<span className="bg-green-100 rounded-full w-4 h-4 flex items-center justify-center">
-													<div className="bg-green-500 rounded-full w-2 h-2"></div>
-												</span>
-											</div>
-										</div>
-										<button className="text-gray-400">•••</button>
-									</div>
-									<p className="text-sm text-gray-600 mt-2">
-										This t-shirt is a fusion of comfort and creativity. The fabric is soft, and the design speaks volumes about the
-										designer&apos;s skill. It&apos;s like wearing a piece of art that reflects my passion for both design and fashion.
-									</p>
-									<p className="text-xs text-gray-500 mt-4">Posted on August 18, 2023</p>
-								</div>
-
-								<div className="border rounded-lg p-4">
-									<div className="flex justify-between mb-2">
-										<div>
-											<div className="flex mb-1">
-												{[1, 2, 3, 4].map(i => (
-													<Star key={i} className="w-4 h-4 fill-[#ffc633] text-[#ffc633]" />
-												))}
-												<Star className="w-4 h-4 fill-[#ffc633] text-[#ffc633]" strokeWidth={0} fill="url(#half-star)" />
-											</div>
-											<div className="flex items-center gap-2">
-												<span className="font-medium">Ava H.</span>
-												<span className="bg-green-100 rounded-full w-4 h-4 flex items-center justify-center">
-													<div className="bg-green-500 rounded-full w-2 h-2"></div>
-												</span>
-											</div>
-										</div>
-										<button className="text-gray-400">•••</button>
-									</div>
-									<p className="text-sm text-gray-600 mt-2">
-										I&apos;m not just wearing a t-shirt, I&apos;m wearing a piece of design philosophy. The intricate details and
-										thoughtful layout of the design make this shirt a conversation-starter.
-									</p>
-									<p className="text-xs text-gray-500 mt-4">Posted on August 19, 2023</p>
-								</div>
-							</div>
-
-							<div className="mt-8 text-center">
-								<button className="border rounded-md px-6 py-3 text-sm font-medium">Load More Reviews</button>
-							</div>
-						</div> */}
 
 						{/* You Might Also Like */}
 						<div className="mt-16">
