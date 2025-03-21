@@ -1,14 +1,15 @@
 import { auth } from '@/auth'
 import Link from 'next/link'
-import { ShoppingCart, Heart, Menu, ArrowRight } from 'lucide-react'
+import { ShoppingCart, Menu, ArrowRight } from 'lucide-react'
 import { Button, buttonVariants } from '@/components/ui/button'
 
-import { Badge } from '@/components/ui/badge'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import Productsearchbar from './product-search-bar'
+import { SignOut } from './signout'
 
 const Navbar = async () => {
 	const session = await auth()
+	const user = session?.user
 
 	return (
 		<div className="border-b">
@@ -40,22 +41,16 @@ const Navbar = async () => {
 								Create Product
 							</Link>
 						)}
-						<Button variant="ghost" size="icon" className="relative">
-							<Heart className="h-5 w-5" />
-							<span className="sr-only">Wishlist</span>
-							<Badge className="absolute -top-1 -right-1 h-5 w-5 p-0 flex items-center justify-center">0</Badge>
-						</Button>
 						<Link href={'/cart'} className={buttonVariants({ variant: 'ghost' })}>
 							<ShoppingCart className="h-5 w-5" />
 							<span className="sr-only">Cart</span>
-							<Badge className="absolute -top-1 -right-1 h-5 w-5 p-0 flex items-center justify-center">0</Badge>
 						</Link>
-						{!session && (
+						{!user && (
 							<Link href={'/customer/sign-in'} className={buttonVariants({ variant: 'default' })}>
 								Sign In
 							</Link>
 						)}
-						{!session && (
+						{!user ? (
 							<DropdownMenu>
 								<DropdownMenuTrigger asChild>
 									<Button variant={'outline'}>
@@ -71,6 +66,8 @@ const Navbar = async () => {
 									</DropdownMenuItem>
 								</DropdownMenuContent>
 							</DropdownMenu>
+						) : (
+							<SignOut user={user} />
 						)}
 					</div>
 					<Button variant="ghost" size="icon" className="md:hidden">
